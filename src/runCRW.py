@@ -15,6 +15,17 @@ else:
 	if section == '1':
 		param = {'strDateDiv':'1', 'searchDate':sys.argv[3], 'district':sys.argv[2], 'itemCode':'11008', 'searchDate_f':sys.argv[3].replace("-", "")[0:6]} 
 		crawler.setProperty(1, param)
-		crawler.printUrl()
 		table = crawler.getTable()
-		print(type(table))
+		str_table = str(table)
+	
+		# print(str_table)	
+		# print("type : ", type(str_table))
+	
+		# file save for data checking
+		head = {'section':'public', 'dataType':'pm25'}
+		file_name = 'pm25Data.txt'
+		output = open(file_name, 'w')
+		output.write(str(head) + '\n')
+		output.write(str_table)
+
+		# call parser.py

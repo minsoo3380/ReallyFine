@@ -38,7 +38,14 @@ class RF_Crawler:
 		req = requests.get(self.url)
 		html = req.text
 		soup = BeautifulSoup(html, 'html.parser')
-		elements = soup.findAll({'tbody'})
+		self.elements = soup.findAll({'tbody'})
 
-		return elements
+		return self.elements
+
+	def printObj(self):
+		print("url : ", self.url)
+		print("requestParam : ", self.requestParam)
+		print("elements : ", self.elements)
+		print("elements type : ", type(self.elements))
+
 
