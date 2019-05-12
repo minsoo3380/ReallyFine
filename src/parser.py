@@ -2,6 +2,8 @@
 import sys
 import ast
 import re
+import pymysql
+import DBConnection
 
 class RF_Parser: 
 
@@ -45,7 +47,9 @@ class RF_Parser:
 					
 					print(data_list[i + 1])
 					#for j in range(26):
-					
+				
+				self.saveData(1, data_list, size)
+
 	
 	# save data local DataBase
 	# logic 1 : save measure station data
@@ -54,14 +58,20 @@ class RF_Parser:
 	# logic 4 : save public asw data 
 	# logic 5 : save private fine dust data 
 	def saveData(self, logic, data_list, size):
+		db = DBConnection.DBCon()
+		db.setAll('localhost', 'root', '123123', 'ReallyFine', 'utf8')
+		cur = db.ConnDB()
+
 		if logic == 1:
+			dt_name = data_list[1][1:3]
+			sql = "select dt_code from district where dt_name = '"
+			sql += dt_name + "'"
+			# print(sql)
+			cur.execute(sql)
+			dt_code = cur.fetchone()
+			print(dt_code[0])
 			
-		elif logic == 2 or logic == 3:
-			data_range = 26
 			
-			
-
-
 	def dataRead(self, file_name):
 		file = open(file_name, 'r')
 

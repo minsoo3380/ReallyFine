@@ -1,4 +1,4 @@
-{'dataType': 'pm25', 'section': 'public'}
+{'section': 'public', 'dataType': 'pm25'}
 [<tbody>
 <tr align="center" height="25px" valign="middle">
 <td>도시대기</td>
