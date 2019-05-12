@@ -19,14 +19,48 @@ class RF_Parser:
 		self.section = head['section']
 		self.dataType = head['dataType']
 
-		self.parsing()
+		self.parsing(tag_list)
 		
 
-	# def parsing(self):
+	def parsing(self, tag_list):
 		if self.section == 'public':
 			if self.dataType == 'pm25' or self.dataType == 'pm10':
-				#pattern = re.compile
-		
+				pattern = re.compile('^<td>')
+				
+				data_list = []
+
+				for index in range(len(tag_list)):
+					match = pattern.match(tag_list[index])
+					
+					if match is None:
+						continue
+			
+					#print(tag_list[index][4:-6])
+					data_list.append(tag_list[index][4:-6])
+			
+				size = int(len(data_list) / 26)
+
+				for index in range(size):
+					i = index * 26
+					
+					print(data_list[i + 1])
+					#for j in range(26):
+					
+	
+	# save data local DataBase
+	# logic 1 : save measure station data
+	# logic 2 : save public fine dust data of pm25
+	# logic 3 : save public fine dust data of pm10
+	# logic 4 : save public asw data 
+	# logic 5 : save private fine dust data 
+	def saveData(self, logic, data_list, size):
+		if logic == 1:
+			
+		elif logic == 2 or logic == 3:
+			data_range = 26
+			
+			
+
 
 	def dataRead(self, file_name):
 		file = open(file_name, 'r')
