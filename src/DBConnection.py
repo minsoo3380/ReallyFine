@@ -29,11 +29,7 @@ class DBCon:
 	def ConnDB(self):
 		conn = pymysql.connect(host=self.host, user=self.user, password=self.password, db=self.db, charset=self.character)
 
-		cur = conn.cursor()
+		# cur = conn.cursor()
 		
-		if cur is None:
-			print('DataBase Connected fail...!')
-		else:
-			print('DataBase Connected Success')
+		return conn
 
-		return cur

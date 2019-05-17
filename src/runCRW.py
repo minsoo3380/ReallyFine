@@ -12,7 +12,8 @@ else:
 	crawler = crawler.RF_Crawler()
 	param = {}
 	section = sys.argv[1]
-
+	
+	# section 1 : pm25 fine dust crawler runable
 	if section == '1':
 		param = {'strDateDiv':'1', 'searchDate':sys.argv[3], 'district':sys.argv[2], 'itemCode':'11008', 'searchDate_f':sys.argv[3].replace("-", "")[0:6]} 
 		crawler.setProperty(1, param)
@@ -24,7 +25,7 @@ else:
 	
 		# file save for data checking
 		file_name = '../doc/pm25Data.txt'
-		head = {'section':'public', 'dataType':'pm25'}
+		head = {'section':'public', 'dataType':'pm25', 'district':sys.argv[2], 'searchDate':sys.argv[3]}
 		output = open(file_name, 'w')
 		output.write(str(head) + '\n')
 		output.write(str_table)
