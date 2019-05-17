@@ -12,25 +12,44 @@ else:
 	crawler = crawler.RF_Crawler()
 	param = {}
 	section = sys.argv[1]
+	file_name = ''
 	
 	# section 1 : pm25 fine dust crawler runable
 	if section == '1':
-		param = {'strDateDiv':'1', 'searchDate':sys.argv[3], 'district':sys.argv[2], 'itemCode':'11008', 'searchDate_f':sys.argv[3].replace("-", "")[0:6]} 
-		crawler.setProperty(1, param)
-		table = crawler.getTable()
-		str_table = str(table)
-	
-		# print(str_table)	
-		# print("type : ", type(str_table))
-	
-		# file save for data checking
+		strDateDiv = '1'
+		searchDate = sys.argv[3]
+		district = sys.argv[2]
+		itemCode = '11008'
+		searchDate_f = sys.argv[3].replace("-", "")[0:6]
 		file_name = '../doc/pm25Data.txt'
-		head = {'section':'public', 'dataType':'pm25', 'district':sys.argv[2], 'searchDate':sys.argv[3]}
-		output = open(file_name, 'w')
-		output.write(str(head) + '\n')
-		output.write(str_table)
-		output.close()
+		dataType = 'pm25'
+		p_section = 'public'
+	elif section == '2':
+		strDateDiv = '1'
+		searchDate = sys.argv[3]
+		district = sys.argv[2]
+		itemCode = '10007'
+		searchDate_f = sys.argv[3].replace("-", "")[0:6]
+		file_name = '../doc/pm10Data.txt'
+		dataType = 'pm10'
+		p_section = 'public'
 
-		# call data parser
-		parser = parser.RF_Parser()
-		parser.analysis(file_name)
+
+	param = {'strDateDiv':strDateDiv, 'searchDate':searchDate, 'district':district, 'itemCode':itemCode, 'searchDate_f':searchDate_f} 
+	crawler.setProperty(int(section), param)
+	table = crawler.getTable()
+	str_table = str(table)
+	
+	# print(str_table)	
+	# print("type : ", type(str_table))
+	
+	# file save for data checking
+	head = {'section':p_section, 'dataType':dataType, 'district':district, 'searchDate':searchDate}
+	output = open(file_name, 'w')
+	output.write(str(head) + '\n')
+	output.write(str_table)
+	output.close()
+
+	# call data parser
+	parser = parser.RF_Parser()
+	parser.analysis(file_name)
