@@ -6,7 +6,7 @@ import sys
 if len(sys.argv) < 3:
 	print("pm2.5 data : filename 1 localNumber searchDate\n")
 	print("pm10 data : filename 2 localNumber searchDate\n")
-	print("AWS data : filename 3 \n")
+	print("AWS data : filename 3 searchDate beforeValue measureBS locationCode\n")
 
 else:
 	crawler = crawler.RF_Crawler()
@@ -24,6 +24,7 @@ else:
 		file_name = '../doc/pm25Data.txt'
 		dataType = 'pm25'
 		p_section = 'public'
+		param = {'strDateDiv':strDateDiv, 'searchDate':searchDate, 'district':district, 'itemCode':itemCode, 'searchDate_f':searchDate_f} 
 	elif section == '2':
 		strDateDiv = '1'
 		searchDate = sys.argv[3]
@@ -33,9 +34,10 @@ else:
 		file_name = '../doc/pm10Data.txt'
 		dataType = 'pm10'
 		p_section = 'public'
+		param = {'strDateDiv':strDateDiv, 'searchDate':searchDate, 'district':district, 'itemCode':itemCode, 'searchDate_f':searchDate_f} 
+	elif section == '3':
+		
 
-
-	param = {'strDateDiv':strDateDiv, 'searchDate':searchDate, 'district':district, 'itemCode':itemCode, 'searchDate_f':searchDate_f} 
 	crawler.setProperty(int(section), param)
 	table = crawler.getTable()
 	str_table = str(table)

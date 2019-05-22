@@ -13,21 +13,24 @@ class RF_Crawler:
 		if section == 1 or section == 2:
 			self.url = 'https://www.airkorea.or.kr/web/pmRelaySub?'
 			self.url = self.setUrl(self.url, param)
-		elif section == '3':
-			self.url = 'https://www.?'
-			self.url = self.setUrl(self.url, param)
+		elif section == 3:
+			self.url = 'https://www.weather.go.kr/cgi-bin/aws/nph-aws_txt_min_cal_test?'
+			self.url = self.setUrl(section, self.url, param)
 
 
-	def setUrl(self, url, param):
-		for key in param:
-			value = param[key]
-			self.requestParam += key + '=' + value
-			if value != list(param.values())[-1]:
-				self.requestParam += '&'
+	def setUrl(self, section, url, param):
+		if section == 1 or section == 2:
+			for key in param:
+				value = param[key]
+				self.requestParam += key + '=' + value
+				if value != list(param.values())[-1]:
+					self.requestParam += '&'
 
-		self.url += self.requestParam
+			self.url += self.requestParam
 
-		return self.url
+			return self.url
+		elif section == 3:
+			print(param)
 
 
 	def printUrl(self):
