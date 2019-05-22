@@ -15,7 +15,7 @@ class RF_Crawler:
 			self.url = self.setUrl(self.url, param)
 		elif section == 3:
 			self.url = 'https://www.weather.go.kr/cgi-bin/aws/nph-aws_txt_min_cal_test?'
-			self.url = self.setUrl(section, self.url, param)
+			self.setUrl(section, self.url, param)
 
 
 	def setUrl(self, section, url, param):
@@ -30,20 +30,30 @@ class RF_Crawler:
 
 			return self.url
 		elif section == 3:
-			print(param)
+			self.url += param
 
 
 	def printUrl(self):
 		print("url : ", self.url)
 
 
-	def getTable(self):
+	def getTbody(self):
 		req = requests.get(self.url)
 		html = req.text
 		soup = BeautifulSoup(html, 'html.parser')
 		self.elements = soup.findAll({'tbody'})
 
 		return self.elements
+
+
+	def getTable(self):
+		req = requests.get(self.url)
+		html = req.content
+		soup = BeautifulSoup(html, 'html.parser')
+		self.elements = soup.findAll({'table'})
+
+		return self.elements
+
 
 	def printObj(self):
 		print("url : ", self.url)

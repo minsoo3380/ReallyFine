@@ -36,10 +36,14 @@ else:
 		p_section = 'public'
 		param = {'strDateDiv':strDateDiv, 'searchDate':searchDate, 'district':district, 'itemCode':itemCode, 'searchDate_f':searchDate_f} 
 	elif section == '3':
-		
+		searchDate = sys.argv[2]
+		beforeValue = sys.argv[3]
+		measureBS = 'MINDB_60M'
+		locationCode = sys.atgv[4]
+		district = ''
 
 	crawler.setProperty(int(section), param)
-	table = crawler.getTable()
+	table = crawler.getTbody()
 	str_table = str(table)
 	
 	# print(str_table)	
