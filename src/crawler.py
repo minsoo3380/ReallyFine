@@ -36,6 +36,23 @@ class RF_Crawler:
 	def printUrl(self):
 		print("url : ", self.url)
 
+	
+	# get html tag elements
+	# option tag : tag name
+	# type : 1 - text, 2 - string
+	def getAllElements(self, tag, type):
+		req = requests.get(self.url)
+	
+		if type == 1:
+			html = req.text
+		elif type == 2:
+			html = req.content
+		
+		soup = BeautifulSoup(html, 'html.parser')
+		self.elements = soup.findAll({tag})
+
+		return self.elements
+
 
 	def getTbody(self):
 		req = requests.get(self.url)
