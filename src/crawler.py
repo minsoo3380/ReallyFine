@@ -54,6 +54,13 @@ class RF_Crawler:
 		return self.elements
 
 
+	def getSoup(self):
+		req = requests.get(self.url)
+		html = req.content
+		soup = BeautifulSoup(html, 'html.parser')
+		
+		return soup
+
 	def getTbody(self):
 		req = requests.get(self.url)
 		html = req.text
