@@ -81,6 +81,7 @@ else:
 		crawler.setProperty(3, param)
 		soup = crawler.getSoup(2)
 		data = soup.tr.table.contents
+		searchLoc = soup.span.contents[0][11:13]
 		
 		for i in range(len(data)):
 			try:
@@ -89,7 +90,23 @@ else:
 				pass
 
 		for i in range(len(saveList)):
-			for j in range(1, len(data) + 1):
-				
+			mss_code = saveList[i][0]
+			startTime = saveList[i][1]
+			timeArange = int(sdtime[0:2]) - startTime + 2
+			print(searchLoc)
+
+			for j in range(1, timeArange):
+				direct_val = data[j].contents[12].contents[0]
+				direct = data[j].contents[13].contents[0]
+				velocity = data[j].contents[14].contents[0]
+				createTime = data[j].contents[0].contents[0].contents[0][0:2]
+
+				sql = "insert into AWSData(mss_code, direction, direction_val, velocity, create_date, create_time)"
+				sql += " values(" + str(mss_code) + ", '" + direct + "', " + direct_val + ", " + velocity + ", '" + today + "', "
+				sql += createTime + ");"
+
+				cur.execute(sql)
+
 	cur.close()
+	con.commit()
 	con.close()
