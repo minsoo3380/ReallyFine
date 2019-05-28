@@ -54,9 +54,15 @@ class RF_Crawler:
 		return self.elements
 
 
-	def getSoup(self):
+	def getSoup(self, logic):
 		req = requests.get(self.url)
-		html = req.content
+		req.encoding = 'euc-kr'
+
+		if logic == 1:
+			html = req.content
+		else:
+			html = req.text
+
 		soup = BeautifulSoup(html, 'html.parser')
 		
 		return soup
