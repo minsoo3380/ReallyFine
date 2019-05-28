@@ -97,15 +97,33 @@ else:
 
 			for j in range(1, timeArange):
 				direct_val = data[j].contents[12].contents[0]
-				direct = data[j].contents[13].contents[0]
+
+				if direct_val == '\xa0':
+					direct_val = 0.0
+				else:
+					direct_val = float(direct_val)
+
+				direct = str(data[j].contents[13].contents[0])
 				velocity = data[j].contents[14].contents[0]
-				createTime = data[j].contents[0].contents[0].contents[0][0:2]
+				
+				if velocity == '\xa0':
+					velocity = 0.0
+				else:
+					velocity = float(velocity)
 
+				createTime = str(data[j].contents[0].contents[0].contents[0][0:2])
+
+				if direct_val == '-' or direct_val == ' ' or direct_val is None:
+					direct_val = 0.0
+				if direct == '-' or direct == ' ' or direct is None:
+					direct = 'null'
+				if velocity == '-' or velocity == ' ' or velocity is None:
+					velocity = 0.0
+				
 				sql = "insert into AWSData(mss_code, direction, direction_val, velocity, create_date, create_time)"
-				sql += " values(" + str(mss_code) + ", '" + direct + "', " + direct_val + ", " + velocity + ", '" + today + "', "
-				sql += createTime + ");"
+				sql += " values (%s, %s, %s, %s, %s, %s)"
 
-				cur.execute(sql)
+				cur.execute(sql, (mss_code, direct, direct_val, velocity, today, createTime))
 
 	cur.close()
 	con.commit()

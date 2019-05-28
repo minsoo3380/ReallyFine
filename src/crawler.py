@@ -12,7 +12,7 @@ class RF_Crawler:
 	def setProperty(self, section, param):
 		if section == 1 or section == 2:
 			self.url = 'https://www.airkorea.or.kr/web/pmRelaySub?'
-			self.url = self.setUrl(self.url, param)
+			self.url = self.setUrl(section, self.url, param)
 		elif section == 3:
 			self.url = 'https://www.weather.go.kr/cgi-bin/aws/nph-aws_txt_min_cal_test?'
 			self.setUrl(section, self.url, param)
