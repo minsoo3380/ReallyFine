@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+		<canvas id="canvas" width="300" height="300"></canvas>
+		<script type="text/javascript">
+			var canvas = document.getElementById("canvas")
+			var ctx = canvas.getContext("2d")
+			
+			ctx.beginPath();
+			ctx.moveTo(0,0);
+			ctx.lineTo(0, 290);
+			ctx.lineTo(290, 290);
+			ctx.closePath();
+
+		ctx.fillStyle = "rgb(200, 0, 0)";
+		ctx.fill();
+		</script>
+	</body>
+</html>
