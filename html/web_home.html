@@ -7,14 +7,22 @@
 	<script type="text/javascript">
 		$(function(){
 			$("#header").load("web_header.html");
-			$("#topFrame").load("web_topFrame.html");
-			$("#fullFrame").load("web_fullFrame.html");
+		});
+		
+		$.get("../php/getTopMenu.php?menu=1", function(data){
+			$("#topFrame").append(data);
+		});
+		
+		$.get("../php/getNavMenu.php?RFmenu=5", function(data){
+			$("#fullFrame").append(data);
 		});
 	</script>
 </head>
+
 <body>
-	<div id="header"></div>	
+	<div id="header"></div>
 	<div id="topFrame"></div>
 	<nav id="fullFrame"></nav>
+	<div id="dataFrame"></div>
 </body>
 </html>
