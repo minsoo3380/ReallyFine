@@ -39,11 +39,4 @@
 	}
 
 	echo json_encode($pm25_rows);
-
-	$pm25_Alen = count($pm25_rows);
-	$pm25_len = count($pm25_rows[0]);
-	$pm25_cnt = $pm25_Alen / $pm25_len;
-	$pm10_Alen = count($pm10_rows);
-	$pm10_len = count($pm10_rows[0]);
-	$pm10_cnt = $pm10_Alen / $pm10_len;
 ?>
