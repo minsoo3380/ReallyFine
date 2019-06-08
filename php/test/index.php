@@ -48,7 +48,7 @@
 		$table['rows'] = $rows;
 		$jsonTable = json_encode($table);
 		
-		echo $jsonTable;
+		//echo $jsonTable;
 		break;
 	case "1101":
 		break;
@@ -57,4 +57,37 @@
 	}
 ?>
 
+<html>
+	<head>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<Script src="../js/jquery-3.4.0.js"></script>
+		<script type="text/javascript">
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart);
+		
+			function drawChart(){
+				var data = new google.visualization.DataTable(<?php echo $jsonTable; ?>);
+				var options = {
+					title:'Public Dust Data',
+					legend:{position:'bottom'},
+					chartArea:{width:'95%', height:'65%'}};
+				var chart = new google.visualization.LineChart(document.getElementById('line_chart'));
+				chart.draw(data, options);
+			}
+			</script>
+		<style>
+			.page-wrapper{
+				width:1000px;
+				margin:0 auto;
+			}
+		</style>
+	</head>
 
+	<body>
+		<div class="page-wrapper">
+			<br />
+			<h2 align="center">Display Google Line Chart with JSON PHP & Mysql</h2>
+			<div id="line_chart" style="width: 100%; height:500px"></div>
+		</div>
+	</body>
+</html>
