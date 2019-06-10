@@ -18,15 +18,6 @@
 			$("#fullFrame").append(data);
 		});
 
-		$.get("../php/getLocation.php?district=02", function(data){
-			$("#district").append(data);
-		});
-
-		$.get("../php/getLocation.php?local=02", function(data){
-			$("#local").append(data);
-		});
-	</script>
-	<script type="text/javascript">
 		google.charts.load('current', {'packages':['corechart']});
 	
 		function drawChart_dust(){
@@ -47,7 +38,7 @@
 
 			chart.draw(data, options);
 		}
-
+	
 		function drawChart_AwsLoc(){
 			var jsonData = $.ajax({
 				url:"../php/getChart.php?section=1101&date=2019-05-01&station=1",
@@ -87,61 +78,27 @@
 
 			chart.draw(data, options);
 		}
-
 		google.charts.setOnLoadCallback(drawChart_dust);
-		google.charts.setOnLoadCallback(drawChart_AwsLoc);
 		google.charts.setOnLoadCallback(drawChart_Aws);
+		google.charts.setOnLoadCallback(drawChart_AwsLoc);
 	</script>
-
 	<script type="text/javascript">
-		function changeDist(){
-			var district = document.getElementById("district");
-			var local = document.getElementById("local");
-			
-			local.options.length = 0;
-
-			var localData = $.ajax({
-				url:"../php/getLocation.php?local=" + district.value,
-				dataType:"html",
-				async:false
-			}).responseText;
-			
-			$("#local").append(localData);
-		}
-
-		function changeLoc(){
-			var district = document.getElementById("district");
-			var local = document.getElementById("local");
-			
-		}
-
-		function updateChart(){
+		function change_chart(obj){
 			var searchDate = document.getElementById("searchDate");
-			var district = document.getElementById("district");
-			var local = document.getElementById("local");
-			
-			//console.log(searchDate.value, district.value, local.value);
 
-			function UpdateCart(){
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart_dust);
+			console.log('ok1');
 
-				var Dust_options = {
-					title:'Public Dust Data',
-					legend:{position:'bottom'},
-					chartArea:{width:'95%', height:'65%'}};
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart_AwsLoc);
+			console.log('ok2');
 
-				var Direc_options = {
-					title:'Public AWS Direction value',
-					legend:{position:'bottom'},
-					chartArea:{width:'95%', height:'65%'},
-
-				var Aws_options = {
-					title:'Public AWS Velocity',
-					legend:{position:'bottom'},
-					chartArea:{width:'95%', height:'65%'},
-			}
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart_Aws);
+			console.log('ok3');
 		}
 	</script>
-
 	<style>
 		.page-wrapper{
 			width:1000px;
@@ -156,10 +113,7 @@
 	<nav id="fullFrame"></nav>
 	<div id="dataFrame">
 		<div id="selector">
-			<select id="district" onchange="changeDist()"></select>
-			<select id="local" onchange="changeLoc()"></select>
-			<input id="searchDate" name="searchDate" type="date">
-			<input id="updateChart" name="updateChart" type="button" value="데이터 검색" onclick="updateChart()">
+			<input id="searchDate" name="searchDate" type="date" onchange="change_chart(this)">
 		</div>
 		<div class="page-wrapper">
 			<br />
