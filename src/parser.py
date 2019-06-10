@@ -141,6 +141,48 @@ class RF_Parser:
 				cur.execute(sql)
 				mss_code = cur.fetchone()[0]
 				startIDX = self.StartRange(logic, mss_code)
+				
+				for j in range(startIDX, 26):
+					time = j - 1 
+					j = i + j
+
+					if data_list[j] == '-':
+						data_list[j] ='-1' 
+					elif data_list[j] == '':
+						break
+					
+					sql = "insert into public_data_" + self.dataType + "(mss_code, data_value, created_date, created_time) values("
+					sql += str(mss_code) + ", " + data_list[j] + ", '" + self.searchDate + "', " + str(time) + ");"
+
+					cur.execute(sql)
+
+
+			cur.close()
+			conn.commit()
+			conn.close()
+
+			return 1
+
+		elif logic == 3:
+			db = DBConnection.DBCon()
+			db.setAll('localhost', 'root', '123123', 'ReallyFine', 'utf8')
+			conn = db.ConnDB()
+			cur = conn.cursor()
+
+			pattern = re.compile(']')
+
+			for index in range(size):
+				i = index * 26
+				station = data_list[i + 1]
+				search_char = pattern.search(station)
+				end = search_char.end()
+				
+				sql = "select mss_code from measure_station where mss_name = '"
+				sql += station[end:] + "'"
+
+				cur.execute(sql)
+				mss_code = cur.fetchone()[0]
+				startIDX = self.StartRange(logic, mss_code)
 
 				for j in range(startIDX, 26):
 					time = j - 1 
@@ -151,7 +193,7 @@ class RF_Parser:
 					elif data_list[j] == '':
 						break
 					
-					sql = "insert into public_data_pm25(mss_code, data_value, created_date, created_time) values("
+					sql = "insert into public_data_pm10(mss_code, data_value, created_date, created_time) values("
 					sql += str(mss_code) + ", " + data_list[j] + ", '" + self.searchDate + "', " + str(time) + ");"
 					cur.execute(sql)
 
@@ -171,7 +213,7 @@ class RF_Parser:
 			
 			startIDX = 2
 
-			sql = "select max(created_time) from public_data_pm25 where created_date = '"
+			sql = "select max(created_time) from public_data_" + self.dataType + " where created_date = '"
 			sql += self.searchDate + "' and mss_code = '" + str(mss_code) + "'"
 			
 			cur.execute(sql)

@@ -18,12 +18,47 @@
 			$("#fullFrame").append(data);
 		});
 	</script>
+	<script type="text/javascript">
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.setOnLoadCallback(drawChart);
+	
+		function drawChart(){
+			var jsonData = $.ajax({
+				url:"../php/getChart.php?section=1001&date=2019-05-01&station=1",
+				dataType: "json",
+				async: false
+			}).responseText;
+
+			var data = new google.visualization.DataTable(jsonData);
+
+			var options = {
+				title:'Public Dust Data & Public AWS Data',
+				legend:{position:'bottom'},
+				chartArea:{width:'95%', height:'65%'}};
+
+			var chart = new google.visualization.LineChart(document.getElementById('line_chart'));
+
+			chart.draw(data, options);
+		}
+	</script>
+	<style>
+		.page-wrapper{
+			width:1000px;
+			margin:0 auto;
+		}
+	</style>
 </head>
 
 <body>
 	<div id="header"></div>
 	<div id="topFrame"></div>
 	<nav id="fullFrame"></nav>
-	<div id="dataFrame"></div>
+	<div id="dataFrame">
+		<div class="page-wrapper">
+			<br />
+			<h2 align="center">Hard Coding</h2>
+			<div id="line_chart" style="width:100%; height:500px"></div>
+		</div>
+	</div>
 </body>
 </html>

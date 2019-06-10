@@ -20,28 +20,34 @@
 	case "1001":
 		$sql_pm25 = "select * from public_data_pm25 where created_date = '".$param_date."' and mss_code = '".$param_code."' order by 'mss_code' asc";
 		$sql_pm10 = "select * from public_data_pm10 where created_date = '".$param_date."' and mss_code = '".$param_code."' order by 'mss_code' asc";
+		$sql_aws = "select * from AWSData where create_date = '".$param_date."' and mss_code = '".$param_code."' order by 'mss_code' asc";
 		$st25 = $pdo->query($sql_pm25);
 		$st10 = $pdo->query($sql_pm10);
 		$rows = array();
 		$table = array();
 
 		$table['cols'] = array(
-			array('label' => 'Date Time', 'type' => 'datetime'),
-			array('label' => 'pm25', 'type' => 'number')
+			array('label' => 'Date Time', 'type' => 'string'),
+			array('label' => 'pm25', 'type' => 'number'),
+			array('label' => 'pm10', 'type' => 'number'),
+			array('label' => 'AWS', 'type' => 'number')
 		);
 
 		while($row25 = $st25->fetch()){
+			$row10 = $st10->fetch();
+			
 			$sub_array = array();
 			$datetime = $row25['created_time'];
 
 			if(strlen($datetime) < 2){
-				$datetime = "0".$datetime.":00";
+				$datetime = "0".$datetime;
 			}else{
-				$datetime = $datetime.":00";
+				$datetime = $datetime;
 			}
 
 			$sub_array[] = array("v" => $datetime);
 			$sub_array[] = array("v" => $row25['data_value']);
+			$sub_array[] = array("v" => $row10['data_value']);
 			$rows[] = array("c" => $sub_array);
 		}
 		
@@ -56,5 +62,3 @@
 		break;
 	}
 ?>
-
-
