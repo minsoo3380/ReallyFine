@@ -20,9 +20,9 @@
 	case "1001":
 		$sql_pm25 = "select * from public_data_pm25 where created_date = '".$param_date."' and mss_code = '".$param_code."' order by 'mss_code' asc";
 		$sql_pm10 = "select * from public_data_pm10 where created_date = '".$param_date."' and mss_code = '".$param_code."' order by 'mss_code' asc";
-		$sql_aws = "select * from AWSData where create_date = '".$param_date."' and mss_code = '".$param_code."' order by 'mss_code' asc";
 		$st25 = $pdo->query($sql_pm25);
 		$st10 = $pdo->query($sql_pm10);
+
 		$rows = array();
 		$table = array();
 
@@ -30,7 +30,6 @@
 			array('label' => 'Date Time', 'type' => 'string'),
 			array('label' => 'pm25', 'type' => 'number'),
 			array('label' => 'pm10', 'type' => 'number'),
-			array('label' => 'AWS', 'type' => 'number')
 		);
 
 		while($row25 = $st25->fetch()){
@@ -57,8 +56,68 @@
 		echo $jsonTable;
 		break;
 	case "1101":
+		$sql_aws = "select * from AWSData where create_date = '".$param_date."' and mss_code = '".$param_code."' order by 'mss_code' asc";
+		$stAws = $pdo->query($sql_aws);
+
+		$rows = array();
+		$table = array();
+
+		$table['cols'] = array(
+			array('label' => 'Date Time', 'type' => 'string'),
+			array('label' => 'direction', 'type' => 'number'),
+		);
+
+		while($rowAws = $stAws->fetch()){
+			$sub_array = array();
+			$datetime = $rowAws['create_time'];
+
+			if(strlen($datetime) < 2){
+				$datetime = "0".$datetime;
+			}else{
+				$datetime = $datetime;
+			}
+
+			$sub_array[] = array("v" => $datetime);
+			$sub_array[] = array("v" => $rowAws['direction_val']);
+			$rows[] = array("c" => $sub_array);
+		}
+		
+		$table['rows'] = $rows;
+		$jsonTable = json_encode($table);
+		
+		echo $jsonTable;
 		break;
 	case "1201":
+		$sql_aws = "select * from AWSData where create_date = '".$param_date."' and mss_code = '".$param_code."' order by 'mss_code' asc";
+		$stAws = $pdo->query($sql_aws);
+
+		$rows = array();
+		$table = array();
+
+		$table['cols'] = array(
+			array('label' => 'Date Time', 'type' => 'string'),
+			array('label' => 'velocity', 'type' => 'number'),
+		);
+
+		while($rowAws = $stAws->fetch()){
+			$sub_array = array();
+			$datetime = $rowAws['create_time'];
+
+			if(strlen($datetime) < 2){
+				$datetime = "0".$datetime;
+			}else{
+				$datetime = $datetime;
+			}
+
+			$sub_array[] = array("v" => $datetime);
+			$sub_array[] = array("v" => $rowAws['velocity']);
+			$rows[] = array("c" => $sub_array);
+		}
+		
+		$table['rows'] = $rows;
+		$jsonTable = json_encode($table);
+		
+		echo $jsonTable;
 		break;
 	}
 ?>
