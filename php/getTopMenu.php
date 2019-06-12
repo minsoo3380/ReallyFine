@@ -1,7 +1,7 @@
 <?php
 	$param_menu = $_REQUEST['menu'];
 	$param_sec = $_REQUEST['RFmenu'];
-
+	
 	$host = "localhost";
 	$db = "ReallyFine";
 	$user = "root";

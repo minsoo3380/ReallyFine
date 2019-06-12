@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head lang="ko">
+	<meta charset="utf-8">
+	<title>Really Fine?</title>
+	<script src="../js/jquery-3.4.0.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$("#header").load("web_header.html");
+		});
+		
+		$.get("../php/getTopMenu.php?menu=1", function(data){
+			$("#topFrame").append(data);
+		});
+		
+		$.get("../php/getNavMenu.php?RFmenu=5", function(data){
+			$("#fullFrame").append(data);
+		});
+
+		google.charts.load('current', {'packages':['corechart']});
+	
+		function drawChart_dust(){
+			var jsonData = $.ajax({
+				url:"../php/getChart.php?section=1001&date=2019-05-01&station=1",
+				dataType: "json",
+				async: false
+			}).responseText;
+
+			var data = new google.visualization.DataTable(jsonData);
+
+			var options = {
+				title:'Public Dust Data',
+				legend:{position:'bottom'},
+				chartArea:{width:'95%', height:'65%'}};
+
+			var chart = new google.visualization.LineChart(document.getElementById('line_chart_dust'));
+
+			chart.draw(data, options);
+		}
+	
+		function drawChart_AwsLoc(){
+			var jsonData = $.ajax({
+				url:"../php/getChart.php?section=1101&date=2019-05-01&station=1",
+				dataType: "json",
+				async: false
+			}).responseText;
+
+			var data = new google.visualization.DataTable(jsonData);
+
+			var options = {
+				title:'Public AWS Direction value',
+				legend:{position:'bottom'},
+				chartArea:{width:'95%', height:'65%'},
+				colors:['#990099']};
+
+			var chart = new google.visualization.LineChart(document.getElementById('line_chart_AwsLoc'));
+
+			chart.draw(data, options);
+		}
+	
+		function drawChart_Aws(){
+			var jsonData = $.ajax({
+				url:"../php/getChart.php?section=1201&date=2019-05-01&station=1",
+				dataType: "json",
+				async: false
+			}).responseText;
+
+			var data = new google.visualization.DataTable(jsonData);
+
+			var options = {
+				title:'Public AWS Velocity',
+				legend:{position:'bottom'},
+				chartArea:{width:'95%', height:'65%'},
+				colors:['#109618']};
+
+			var chart = new google.visualization.LineChart(document.getElementById('line_chart_AWS'));
+
+			chart.draw(data, options);
+		}
+		google.charts.setOnLoadCallback(drawChart_dust);
+		google.charts.setOnLoadCallback(drawChart_Aws);
+		google.charts.setOnLoadCallback(drawChart_AwsLoc);
+	</script>
+	<script type="text/javascript">
+		function change_chart(obj){
+			var searchDate = document.getElementById("searchDate");
+
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart_dust);
+			console.log('ok1');
+
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart_AwsLoc);
+			console.log('ok2');
+
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart_Aws);
+			console.log('ok3');
+		}
+	</script>
+	<style>
+		.page-wrapper{
+			width:1000px;
+			margin:0 auto;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="header"></div>
+	<div id="topFrame"></div>
+	<nav id="fullFrame"></nav>
+	<div id="dataFrame">
+		<div id="selector">
+			<input id="searchDate" name="searchDate" type="date" onchange="change_chart(this)">
+		</div>
+		<div class="page-wrapper">
+			<br />
+			<h2 align="center">Public Fine Dust & AWS Data</h2>
+			<div id="line_chart_dust" style="width:100%; height:500px"></div>
+			<div id="line_chart_AwsLoc" style="width:100%; height:500px"></div>
+			<div id="line_chart_AWS" style="width:100%; height:500px"></div>
+		</div>
+	</div>
+</body>
+</html>

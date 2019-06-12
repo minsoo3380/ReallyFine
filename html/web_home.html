@@ -6,15 +6,22 @@
 	<script src="../js/jquery-3.4.0.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
+		var DustChart;
+		var LocChart;
+		var AwsChart;
+		var param_type = getQuery('type');
+		var param_menu = getQuery('menu');
+		var param_RF = getQuery('RFmenu');
+
 		$(function(){
 			$("#header").load("web_header.html");
 		});
 		
-		$.get("../php/getTopMenu.php?menu=1", function(data){
+		$.get("../php/getTopMenu.php?menu=" + param_menu, function(data){
 			$("#topFrame").append(data);
 		});
 		
-		$.get("../php/getNavMenu.php?RFmenu=5", function(data){
+		$.get("../php/getNavMenu.php?RFmenu=" + param_RF, function(data){
 			$("#fullFrame").append(data);
 		});
 
@@ -25,14 +32,35 @@
 		$.get("../php/getLocation.php?local=02", function(data){
 			$("#local").append(data);
 		});
-	</script>
-	<script type="text/javascript">
+
+		$(document).ready(function(){
+			var searchDate = document.getElementById("searchDate");
+			searchDate.value = '2019-05-01';
+		});
+
+		function getQuery(param){
+			var url = window.location.search.substring(1);
+			var url_arr = url.split('&');
+
+			for(var i = 0;i < url_arr.length;i++){
+				var key_value = url_arr[i].split('=');
+
+				if(key_value[0] == param){
+					return key_value[1];
+				}
+			}
+		}
+
 		google.charts.load('current', {'packages':['corechart']});
 	
 		function drawChart_dust(){
+			var searchDate = document.getElementById("searchDate");
+			var district = document.getElementById("district");
+			var local = document.getElementById("local");
+
 			var jsonData = $.ajax({
-				url:"../php/getChart.php?section=1001&date=2019-05-01&station=1",
-				dataType: "json",
+				url:"../php/getChart.php?section=1001&date=" + searchDate.value + "&station=" + local.value + "&type=" + param_type,
+				dataType:"json",
 				async: false
 			}).responseText;
 
@@ -43,14 +71,18 @@
 				legend:{position:'bottom'},
 				chartArea:{width:'95%', height:'65%'}};
 
-			var chart = new google.visualization.LineChart(document.getElementById('line_chart_dust'));
+			DustChart = new google.visualization.LineChart(document.getElementById('line_chart_dust'));
 
-			chart.draw(data, options);
+			DustChart.draw(data, options);
 		}
 
 		function drawChart_AwsLoc(){
+			var searchDate = document.getElementById("searchDate");
+			var district = document.getElementById("district");
+			var local = document.getElementById("local");
+
 			var jsonData = $.ajax({
-				url:"../php/getChart.php?section=1101&date=2019-05-01&station=1",
+				url:"../php/getChart.php?section=1101&date=" + searchDate.value + "&station=" + local.value + "&type=" + param_type,
 				dataType: "json",
 				async: false
 			}).responseText;
@@ -63,18 +95,18 @@
 				chartArea:{width:'95%', height:'65%'},
 				colors:['#990099']};
 
-			var chart = new google.visualization.LineChart(document.getElementById('line_chart_AwsLoc'));
+			LocChart = new google.visualization.LineChart(document.getElementById('line_chart_AwsLoc'));
 
-			chart.draw(data, options);
+			LocChart.draw(data, options);
 		}
 	
 		function drawChart_Aws(){
 			var jsonData = $.ajax({
-				url:"../php/getChart.php?section=1201&date=2019-05-01&station=1",
+				url:"../php/getChart.php?section=1201&date=" + searchDate.value + "&station=" + local.value + "&type=" + param_type,
 				dataType: "json",
 				async: false
 			}).responseText;
-
+			
 			var data = new google.visualization.DataTable(jsonData);
 
 			var options = {
@@ -83,17 +115,11 @@
 				chartArea:{width:'95%', height:'65%'},
 				colors:['#109618']};
 
-			var chart = new google.visualization.LineChart(document.getElementById('line_chart_AWS'));
+			AwsChart = new google.visualization.LineChart(document.getElementById('line_chart_AWS'));
 
-			chart.draw(data, options);
+			AwsChart.draw(data, options);
 		}
 
-		google.charts.setOnLoadCallback(drawChart_dust);
-		google.charts.setOnLoadCallback(drawChart_AwsLoc);
-		google.charts.setOnLoadCallback(drawChart_Aws);
-	</script>
-
-	<script type="text/javascript">
 		function changeDist(){
 			var district = document.getElementById("district");
 			var local = document.getElementById("local");
@@ -116,20 +142,21 @@
 		}
 
 		function UpdateChart(){
+			DustChart.clearChart();
+			LocChart.clearChart();
+			AwsChart.clearChart();
+			/*
+			//console.log(searchDate.value, district.value, local.value);
 			var searchDate = document.getElementById("searchDate");
 			var district = document.getElementById("district");
 			var local = document.getElementById("local");
-			
-			var DustChart = document.getElementById("line_chart_dust");
-			console.log(DustChart);
-			DustChart.clearChart();
-			//console.log(searchDate.value, district.value, local.value);
 
 			var DustData = $.ajax({
 				url:"../php/getChart.php?section=1001&date=" + searchDate.value + "&station=" + local.value,
 				dataType:"json",
 				async: false
 			}).responseText;
+			
 
 			var DirecData = $.ajax({
 				url:"../php/getChart.php?section=1101&date=" + searchDate.value + "&station=" + local.value,
@@ -144,6 +171,8 @@
 			}).responseText;
 
 			console.log(DustData);
+			console.log(DirecData);
+			console.log(AwsData);
 
 			var Dust_options = {
 				title:'Public Dust Data',
@@ -162,8 +191,21 @@
 				chartArea:{width:'95%', height:'65%'},
 				colors:['#109618']};
 			
-			var Dust_chart = new google.visualization.LineChart(document.getElementById('line_chart_dust'));
+			DustChart = new google.visualization.LineChart(document.getElementById('line_chart_dust'));
+			LocChart = new google.visualization.LineChart(document.getElementById('line_chart_AwsLoc'));
+			AwsChart = new google.visualization.LineChart(document.getElementById('line_chart_AWS'));
+			DustChart.draw(DustData, Dust_options);
+			LocChart.draw(DirecData, Direc_options);
+			AwsChart.draw(AwsData, Aws_options);
+			*/
+			google.charts.setOnLoadCallback(drawChart_dust);
+			google.charts.setOnLoadCallback(drawChart_AwsLoc);
+			google.charts.setOnLoadCallback(drawChart_Aws);
 		}
+		
+		google.charts.setOnLoadCallback(drawChart_dust);
+		google.charts.setOnLoadCallback(drawChart_AwsLoc);
+		google.charts.setOnLoadCallback(drawChart_Aws);
 	</script>
 
 	<style>
