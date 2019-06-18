@@ -30,7 +30,7 @@
 	$st = $pdo->query($sql);
 	$cur_menu = $st->fetch();
 
-	echo "<ul><li>$p_title</li><ul>";
+	echo '<ul class="NavParent"><li>'.$p_title.'</li><ul>';
 
 	while($cur_menu){
 		echo "<li>$cur_menu[title]</li>";
@@ -40,7 +40,7 @@
 			$st2 = $pdo->query($sql);
 			$child = $st2->fetch();
 					
-			echo "<ul>";
+			echo '<ul class="NavChild">';
 			while($child){
 				echo "<li>$child[title]</li>";
 		

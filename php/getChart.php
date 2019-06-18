@@ -73,10 +73,14 @@
 				array('label' => 'Date', 'type' => 'string'),
 				array('label' => 'pm25', 'type' => 'number'),
 				array('label' => 'pm10', 'type' => 'number'),
+				array('label' => 'pm25_High', 'type' => 'number'),
+				array('label' => 'pm10_High', 'type' => 'number'),
 			);
 			
 			$value25 = 0;
 			$value10 = 0;
+			$value25H = 0;
+			$value10H = 0;
 			$count = 0;
 
 			while($row25 = $st25->fetch()){
@@ -88,6 +92,12 @@
 				$cur_date = $row25['created_date'];
 				$cur_date = substr($cur_date, 8, 10);
 				
+				if($value25H < (int)$row25['data_value']){
+					$value25H = (int)$row25['data_value'];
+				}
+				if($value10H < (int)$row10['data_value']){
+					$value10H = (int)$row10['data_value'];
+				}
 				$value25 += $row25['data_value'];
 				$value10 += $row10['data_value'];
 
@@ -98,11 +108,15 @@
 					$sub_array[] = array("v" => $cur_date);
 					$sub_array[] = array("v" => $value25);
 					$sub_array[] = array("v" => $value10);
+					$sub_array[] = array("v" => $value25H);
+					$sub_array[] = array("v" => $value10H);
 					$rows[] = array("c" => $sub_array);
 
 					$count = 0;
 					$value25 = 0;
 					$value10 = 0;
+					$value25H = 0;
+					$value10H = 0;
 				}
 			}
 		

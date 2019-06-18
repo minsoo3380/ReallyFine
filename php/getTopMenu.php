@@ -15,17 +15,17 @@
 		echo $e->getMessage();
 	}
 
-	$sql = "select id, title from sdm_tree where parent_id = 1";
+	$sql = "select id, title from sdm_tree where parent_id = $param_menu";
 	$st = $pdo->query($sql);
 	$rows = $st->fetch();
 			
-	echo "<ul>";
+	echo '<ul class="TopParent">';
 	while($rows){
 		$id = $rows[id];
 		$title = $rows[title];
 
-		echo "<li>$title</li>";
-		echo "<ul>";
+		echo '<li class="TopList">'.$title.'</li>';
+		echo '<ul class="inList">';
 				
 		$sub_sql = "select id, title from sdm_tree where parent_id = ".$id;
 		$st2 = $pdo->query($sub_sql);
