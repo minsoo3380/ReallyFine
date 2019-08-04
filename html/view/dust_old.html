@@ -3,7 +3,7 @@
 <head lang="ko">
 	<meta charset="utf-8">
 	<title>Really Fine?</title>
-	<script src="../js/jquery-3.4.0.js"></script>
+	<script src="../../js/jquery-3.4.0.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
 		var DustChart;
@@ -18,19 +18,19 @@
 			$("#header").load("web_header.html");
 		});
 		
-		$.get("../php/getTopMenu.php?menu=" + param_menu, function(data){
+		$.get("../../php/getTopMenu.php?menu=" + param_menu, function(data){
 			$("#topFrame").append(data);
 		});
 		
-		$.get("../php/getNavMenu.php?RFmenu=" + param_RF, function(data){
+		$.get("../../php/getNavMenu.php?RFmenu=" + param_RF, function(data){
 			$("#fullFrame").append(data);
 		});
 
-		$.get("../php/getLocation.php?district=02", function(data){
+		$.get("../../php/getLocation.php?district=02", function(data){
 			$("#district").append(data);
 		});
 
-		$.get("../php/getLocation.php?local=02", function(data){
+		$.get("../../php/getLocation.php?local=02", function(data){
 			$("#local").append(data);
 		});
 
@@ -65,7 +65,7 @@
 			else 
 				param_type = '1';
 			var jsonData = $.ajax({
-				url:"../php/getChart.php?section=1001&date=" + searchDate.value + "&station=" + local.value + "&type=" + param_type,
+				url:"../../php/getChart.php?section=1001&date=" + searchDate.value + "&station=" + local.value + "&type=" + param_type,
 				dataType:"json",
 				async: false
 			}).responseText;
@@ -94,7 +94,7 @@
 				param_type = '1';
 
 			var jsonData = $.ajax({
-				url:"../php/getChart.php?section=1101&date=" + searchDate.value + "&station=" + local.value + "&type=" + param_type,
+				url:"../../php/getChart.php?section=1101&date=" + searchDate.value + "&station=" + local.value + "&type=" + param_type,
 				dataType: "json",
 				async: false
 			}).responseText;
@@ -120,7 +120,7 @@
 			else 
 				param_type = '1';
 			var jsonData = $.ajax({
-				url:"../php/getChart.php?section=1201&date=" + searchDate.value + "&station=" + local.value + "&type=" + param_type,
+				url:"../../php/getChart.php?section=1201&date=" + searchDate.value + "&station=" + local.value + "&type=" + param_type,
 				dataType: "json",
 				async: false
 			}).responseText;
@@ -145,7 +145,7 @@
 			local.options.length = 0;
 
 			var localData = $.ajax({
-				url:"../php/getLocation.php?local=" + district.value,
+				url:"../../php/getLocation.php?local=" + district.value,
 				dataType:"html",
 				async:false
 			}).responseText;
