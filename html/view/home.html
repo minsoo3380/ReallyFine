@@ -6,8 +6,15 @@
 		<script src="../../js/jquery-3.4.0.js"></script>
 		<script type="text/javascript">
 			$(function(){
-				$("#header").load("web_header.html");
-				$("#nav").load("nav.html");
+				$("#header").load("logo.html");
+			});
+		
+			$.get("../../php/getNav.php", function(data){
+				$("#nav").append(data);
+			});
+
+			$.get("../../php/getAside.php?ASmenu=7", function(data){
+				$("#aside").append(data);
 			});
 		</script>
 	</head>
@@ -16,6 +23,9 @@
 		<header id="header"></header>
 
 		<nav id="nav"></nav>
+
+		<aside id="aside">
+		</aside>
 		
 		<section id="section">
 			<article id="article_intro">
@@ -38,9 +48,6 @@
 			</article>
 		</section>
 		
-		<aside id="aside">
-		</aside>
-
 		<footer id="footer">
 			<img src="../images/web_logo.PNG">
 			<p><b>Copyright @ minsookim. All rights reserved.</b></p>

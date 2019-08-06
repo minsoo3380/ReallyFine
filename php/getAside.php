@@ -1,5 +1,5 @@
 <?php
-	$param_sec = $_REQUEST['RFmenu'];
+	$param_sec = $_REQUEST['ASmenu'];
 
 	$host = "localhost";
 	$db = "ReallyFine";
