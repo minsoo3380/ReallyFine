@@ -30,19 +30,27 @@
 	$st = $pdo->query($sql);
 	$cur_menu = $st->fetch();
 
-	echo '<ul class="NavParent"><li>'.$p_title.'</li><ul>';
+	echo '<ul class="ASParent"><li>'.$p_title.'</li><ul>';
 
 	while($cur_menu){
-		echo "<li>$cur_menu[title]</li>";
+		$link_sql = "select * from web_url where id = ".$cur_menu[id];
+		$st = $pdo->query($link_sql);
+		$cur_url = $st->fetch();
+
+		echo '<a href = "http://112.186.204.239:50000/ReallyFine/html/'.$cur_url[url].'"><li>'.$cur_menu[title].'</li></a>';
 
 		if($cur_menu[id] == $param_sec){
 			$sql = "select * from sdm_tree where parent_id = ".$cur_menu[id];
 			$st2 = $pdo->query($sql);
 			$child = $st2->fetch();
 					
-			echo '<ul class="NavChild">';
+			echo '<ul class="ASChild">';
 			while($child){
-				echo "<li>$child[title]</li>";
+				$link_sql = "select * from web_url where id = ".$child[id];
+				$st3 = $pdo->query($link_sql);
+				$child_url = $st3->fetch();
+				
+				echo '<a href = "http://112.186.204.239:50000/ReallyFine/html/'.$child_url[url].'"><li>'.$child[title].'</li></a>';
 		
 				$child = $st2->fetch();
 			}

@@ -1,0 +1,25 @@
+[Thu Aug 08 01:56:33.589522 2019] [ssl:warn] [pid 33100] AH01909: ReallyFine:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 01:56:33.654534 2019] [ssl:warn] [pid 33101] AH01909: ReallyFine:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 03:57:26.023318 2019] [ssl:warn] [pid 33485] AH01909: ReallyFine:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 03:57:26.154633 2019] [ssl:warn] [pid 33486] AH01909: ReallyFine:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 03:57:52.316588 2019] [ssl:warn] [pid 33541] AH01909: ReallyFine:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 03:57:52.348713 2019] [ssl:warn] [pid 33542] AH01909: ReallyFine:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 03:59:03.767613 2019] [ssl:warn] [pid 33601] AH01909: ReallyFine:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 03:59:03.806340 2019] [ssl:warn] [pid 33602] AH01909: ReallyFine:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:00:23.683142 2019] [ssl:warn] [pid 33663] AH01909: ReallyFine:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:00:23.715884 2019] [ssl:warn] [pid 33664] AH01909: ReallyFine:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:14:07.449506 2019] [ssl:warn] [pid 34518] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:14:07.494358 2019] [ssl:warn] [pid 34519] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:14:12.175673 2019] [autoindex:error] [pid 34523] [client 172.30.1.254:10924] AH01276: Cannot serve directory /var/www/html/ReallyFine/html/view/: No matching DirectoryIndex (index.html,index.cgi,index.pl,index.php,index.xhtml,index.htm) found, and server-generated directory index forbidden by Options directive
+[Thu Aug 08 04:44:27.347747 2019] [ssl:warn] [pid 35086] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:44:27.402693 2019] [ssl:warn] [pid 35087] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:50:18.338598 2019] [ssl:warn] [pid 35483] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:50:18.379706 2019] [ssl:warn] [pid 35484] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:58:36.037243 2019] [ssl:warn] [pid 35648] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:58:36.076631 2019] [ssl:warn] [pid 35649] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:59:03.024568 2019] [ssl:warn] [pid 35715] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 04:59:03.062120 2019] [ssl:warn] [pid 35716] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 05:00:46.523646 2019] [autoindex:error] [pid 35730] [client 172.30.1.254:11870] AH01276: Cannot serve directory /var/www/html/ReallyFine/html/: No matching DirectoryIndex (index.html,index.cgi,index.pl,index.php,index.xhtml,index.htm) found, and server-generated directory index forbidden by Options directive
+[Thu Aug 08 15:27:26.780629 2019] [ssl:warn] [pid 1338] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 15:27:29.861946 2019] [ssl:warn] [pid 1349] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name
+[Thu Aug 08 15:32:10.745837 2019] [ssl:warn] [pid 1349] AH01909: ReallyFine.com:443:0 server certificate does NOT include an ID which matches the server name

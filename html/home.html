@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head lang="ko">
+		<meta charset="utf-8">
+		<title>Really Fine?</title>
+		<script src="../js/jquery-3.4.0.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$("#header").load("logo.html");
+			});
+		
+			$.get("../php/getNav.php", function(data){
+				$("#nav").append(data);
+			});
+
+			$.get("../php/getAside.php?ASmenu=6", function(data){
+				$("#aside").append(data);
+			});
+		</script>
+	</head>
+
+	<body>
+		<header id="header"></header>
+
+		<nav id="nav"></nav>
+
+		<aside id="aside">
+		</aside>
+		
+		<section id="section">
+			<article id="article_intro">
+				<h1>Really Fine?</h1>
+				<p id="introduce">Really Fine?은 에어코리아에서 제공되는 실시간 미세먼지 관측 데이터와 AWS에서 제공되는 실시간 풍향 데이터를 확인하거나 두 데이터간의 상관관계 및 풍향별 미세먼지 데이터의 예측 수치를 확인할 수 있는 시스템입니다.</p>
+			</article>
+			
+			<article id="article_view">
+				<img src="images/fine_dust.PNG">
+				<img src="images/wind_rose.PNG">
+			</article>
+	
+			<article id="article_site">
+				<a href="http://www.keco.or.kr"><img src="images/site01.jpg"></a>
+				<a href="http://www.me.go.kr"><img src="images/site02.jpg"></a>
+				<a href="http://www.weather.go.kr"><img src="images/site03.jpg"></a>
+				<a href="https://air.incheon.go.kr/"><img src="images/site04.jpg"></a>
+				<a href="http://cleanair.seoul.go.kr/main.htm"><img src="images/site05.jpg"></a>
+				<a href="http://www.me.go.kr/cleanair"><img src="images/site06.jpg"></a>
+			</article>
+		</section>
+		
+		<footer id="footer">
+			<img src="images/web_logo.PNG">
+			<p><b>Copyright @ minsookim. All rights reserved.</b></p>
+		</footer>
+	</body>
+</html>

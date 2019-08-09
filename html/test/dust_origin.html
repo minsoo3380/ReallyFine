@@ -3,7 +3,7 @@
 <head lang="ko">
 	<meta charset="utf-8">
 	<title>Really Fine?</title>
-	<script src="../../js/jquery-3.4.0.js"></script>
+	<script src="../js/jquery-3.4.0.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
 		var DustChart;
@@ -15,22 +15,22 @@
 		var param_RF = getQuery('RFmenu');
 
 		$(function(){
-			$("#header").load("web_header.html");
+			$("#header").load("logo.html");
 		});
 		
-		$.get("../../php/getTopMenu.php?menu=" + param_menu, function(data){
+		$.get("../php/getTopMenu.php?menu=" + param_menu, function(data){
 			$("#topFrame").append(data);
 		});
 		
-		$.get("../../php/getNavMenu.php?RFmenu=" + param_RF, function(data){
+		$.get("../php/getNavMenu.php?RFmenu=" + param_RF, function(data){
 			$("#fullFrame").append(data);
 		});
 
-		$.get("../../php/getLocation.php?district=02", function(data){
+		$.get("../php/getLocation.php?district=02", function(data){
 			$("#district").append(data);
 		});
 
-		$.get("../../php/getLocation.php?local=02", function(data){
+		$.get("../php/getLocation.php?local=02", function(data){
 			$("#local").append(data);
 		});
 

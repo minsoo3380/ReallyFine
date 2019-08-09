@@ -16,7 +16,7 @@
 	$st = $pdo->query($sql);
 	$rows = $st->fetch();
 			
-	echo '<ul class="NavTop">';
+	echo '<ul class="NavParent">';
 	while($rows){
 		$id = $rows[id];
 		$title = $rows[title];
@@ -27,8 +27,8 @@
 
 		//echo $web_url[url];
 
-		echo '<a href="'.$web_url[url].'"><li class="NavList">'.$title.'</li></a>';
-		echo '<ul class="inerList">';
+		echo '<a href="'.$web_url[url].'"><li class="NavChild">'.$title.'</li></a>';
+		echo '<ul class="NavIner">';
 				
 		$sub_sql = "select id, title from sdm_tree where parent_id = ".$id;
 		$st2 = $pdo->query($sub_sql);
