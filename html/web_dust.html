@@ -5,6 +5,48 @@
 		<title>Really Fine?</title>
 		<script src="../js/jquery-3.4.0.js"></script>
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript">
+			var RFmenu = getQuery('RFmenu');
+			var ServerDate = new Date();
+			var SearchDate = ServerDate.getFullYear() + '-' + (ServerDate.getMonth() + 1) + '-' + ServerDate.getDate();
+
+			$(document).ready(function(){
+				var input_Date = document.getElementById("searchDate");
+				input_Date.value = SearchDate;
+
+				$(function(){
+					$("#header").load("logo.html");
+				});
+
+				$.get("../php/getNav.php", function(data){
+					$("#nav").append(data);
+				});
+
+				$.get("../php/getAside.php?RFmenu=" + RFmenu, function(data){
+					$("#aside").append(data);
+				});
+			
+				$.get("../php/getTable.php?section=" + RFmenu + "&date=" + SearchDate, function(data){
+					$("#data_table").append(data);
+				});
+			
+				$.get("../php/getLocation.php?district=02", function(data){
+					$("#district").append(data);
+				});
+			});
+
+			function getQuery(param){
+				var url = window.location.search.substring(1);
+				var url_arr = url.split('&');
+				
+				for(var i = 0;i < url_arr.length;i++){
+					var key_value = url_arr[i].split('=');
+					if(key_value[0] == param){
+						return key_value[1];
+					}
+				}
+			}
+		</script>
 	</head>
 
 	<body>
@@ -14,7 +56,28 @@
 		<nav id="nav">
 		</nav>
 
+		<aside id="aside">
+		</aside>
+
 		<section id="section">
+			<article id="section_title">
+
+			</article>
+			<article id="search_head">
+				<h5>데이터 구분<h5>
+				<input type="radio" id="dataType_day" name="dataType" value="0" checked>
+				<label for="dataType_day">시간</label>
+				<input type="radio" id="dataType_mon" name="dataType" value="1">
+				<input id="searchDate" name="searchDate" type="date">
+				<select id="district"></select>
+				<input id="updateTable" name="updateTable" type="button" value="검색">
+				<input id="CallGraph" name="CallGraph" type="button" value="그래프 보기">
+				<img src="images/excel.png">
+			</article>
+		
+			<article id="data_table">
+				
+			</article>
 		</section>
 
 		<footer id="footer">
