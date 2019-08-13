@@ -8,11 +8,24 @@
 		<script type="text/javascript">
 			var RFmenu = getQuery('RFmenu');
 			var ServerDate = new Date();
-			var SearchDate = ServerDate.getFullYear() + '-' + (ServerDate.getMonth() + 1) + '-' + ServerDate.getDate();
+			var Year = ServerDate.getFullYear();
+			var Month = ServerDate.getMonth() + 1;
+			var Day = ServerDate.getDate();
+		
+			if(Month < 10){
+				Month = "0" + Month;
+			}
+
+			var SearchDate = Year + '-' + Month + '-' + Day;
 
 			$(document).ready(function(){
 				var input_Date = document.getElementById("searchDate");
 				input_Date.value = SearchDate;
+				
+				setSearchDate();
+				$("#avg_year").val(ServerDate.getFullYear()).prop("selected", true);
+				$("#avg_mon").val(Month).prop("selected", true);
+				console.log(Month);
 
 				$(function(){
 					$("#header").load("logo.html");
@@ -34,6 +47,38 @@
 					$("#district").append(data);
 				});
 			});
+			
+			function setSearchDate(){
+				var selector_year = document.getElementById("avg_year");
+				var selector_mon = document.getElementById("avg_mon");
+				var min_date = 2010;
+				
+				for(var i = ServerDate.getFullYear();i >= min_date;i--){
+					var option = document.createElement("option");
+					var option_value = document.createTextNode(i);
+					
+					option.appendChild(option_value);
+					selector_year.appendChild(option);
+				}
+
+				for(var i = 0;i <= 12;i++){
+					var option = document.createElement("option");
+					var option_value = null;
+					var text = null;
+
+					if(i == 0){
+						text = "월 선택";
+					}else if(i < 10){
+						text = "0" + i;
+					}else{
+						text = i;
+					}
+
+					option_value = document.createTextNode(text);
+					option.appendChild(option_value);
+					selector_mon.appendChild(option);
+				}	
+			}
 
 			function getQuery(param){
 				var url = window.location.search.substring(1);
@@ -64,11 +109,18 @@
 
 			</article>
 			<article id="search_head">
-				<h5>데이터 구분<h5>
+				<h5>데이터 구분</h5>
 				<input type="radio" id="dataType_day" name="dataType" value="0" checked>
 				<label for="dataType_day">시간</label>
 				<input type="radio" id="dataType_mon" name="dataType" value="1">
-				<input id="searchDate" name="searchDate" type="date">
+				<label for="dataType_mon">일평균</label>
+				<span id="DateType1">
+					<input id="searchDate" type="date">
+				</span>
+				<span id="DateType2">
+					<select id="avg_year"></select>
+					<select id="avg_mon"></select>
+				</span>
 				<select id="district"></select>
 				<input id="updateTable" name="updateTable" type="button" value="검색">
 				<input id="CallGraph" name="CallGraph" type="button" value="그래프 보기">
