@@ -3,17 +3,17 @@
 	<head lang="ko">
 		<meta charset="utf-8">
 		<title>Really Fine?</title>
-		<script src="../js/jquery-3.4.0.js"></script>
+		<script src="js/jquery-3.4.0.js"></script>
 		<script type="text/javascript">
 			$(function(){
 				$("#header").load("logo.html");
 			});
 		
-			$.get("../php/getNav.php", function(data){
+			$.get("php/getNav.php", function(data){
 				$("#nav").append(data);
 			});
 
-			$.get("../php/getAside.php?RFmenu=900", function(data){
+			$.get("php/getAside.php?RFmenu=900", function(data){
 				$("#aside").append(data);
 			});
 		</script>
