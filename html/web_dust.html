@@ -3,7 +3,7 @@
 	<head lang="ko">
 		<meta charset="utf-8">
 		<title>Really Fine?</title>
-		<script src="../js/jquery-3.4.0.js"></script>
+		<script src="js/jquery-3.4.0.js"></script>
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<script type="text/javascript">
 			var RFmenu = getQuery('RFmenu');
@@ -31,19 +31,19 @@
 					$("#header").load("logo.html");
 				});
 
-				$.get("../php/getNav.php", function(data){
+				$.get("php/getNav.php", function(data){
 					$("#nav").append(data);
 				});
 
-				$.get("../php/getAside.php?RFmenu=" + RFmenu, function(data){
+				$.get("php/getAside.php?RFmenu=" + RFmenu, function(data){
 					$("#aside").append(data);
 				});
 			
-				$.get("../php/getTable.php?section=" + RFmenu + "&date=" + SearchDate, function(data){
+				$.get("php/getTable.php?section=" + RFmenu + "&date=" + SearchDate, function(data){
 					$("#data_table").append(data);
 				});
 			
-				$.get("../php/getLocation.php?district=02", function(data){
+				$.get("php/getLocation.php?district=02", function(data){
 					$("#district").append(data);
 				});
 			});
