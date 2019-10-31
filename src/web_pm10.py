@@ -31,7 +31,7 @@ if len(sys.argv) == 2:
 	month = now[5:7]
 	day = now[8:10]
 
-	tmp_now = date_time.now()
+	tmp_now = datetime.now()
 	hour = tmp_now.hour
 else:
 	now = datetime.now()
@@ -175,11 +175,13 @@ try:
 		
 		for mss_len in range(len(data_list[dist_len][1])):
 			#print(data_list[dist_len][1][mss_len])
+			#t_data : 현재 시간 측정된 데이터
 			pre_mss_name = data_list[dist_len][1][mss_len][1]
 			print("current hour : ", hour)
 			print("cur data : ", data_list[dist_len][1][mss_len]) 
-			t_data = data_list[dist_len][1][mss_len][hour]
-			
+			t_data = data_list[dist_len][1][mss_len][hour + 1]
+			print("t_data : ", t_data)			
+
 			#패턴 매칭
 			match = pattern.match(pre_mss_name)
 			start_index = len(match.group())
@@ -189,10 +191,15 @@ try:
 			#print(mss_name)
 			sql_find_msscode = "select mss_code from measure_station where dt_code = '"
 			sql_find_msscode += dt_code + "' and mss_name like '%" + mss_name + "%'"
-
-			cur.execute(sql_find_msscode)
-			fetchset = cur.fetchone()
-			mss_code = fetchset[0]
+			#print("find_msscode sql : ", sql_find_msscode)
+			
+			try:
+				cur.execute(sql_find_msscode)
+				fetchset = cur.fetchone()
+				mss_code = fetchset[0]
+			except:
+				print("there is not existence mss_code of ", mss_name, " check a DataBase")
+				sys.exit()
 
 			#print("mss_name : ", mss_name, "|| mss_code : ", mss_code)
 			# 데이터가 없다면 insert 있다면 update!
@@ -202,20 +209,52 @@ try:
 			#print(sql_checkdata)
 			cur.execute(sql_checkdata)
 			fetchset = cur.fetchone()
-			
+
+			# tuple로 재구성
+			data_tuple = []
+			data_tuple.append(mss_code)
+			data_tuple.append(searchDate)
+
+			for index in range(2,26):
+				#print(data_list[dist_len][1][mss_len][index])
+				#print(type(data_list[dist_len][1][mss_len][index]))
+				data_tuple.append(int(data_list[dist_len][1][mss_len][index]))
+
+			#data_tuple = tuple(data_tuple)
+			#print("data_tuple : ", data_tuple)	
+			#print("mss_code type : ", type(mss_code))			
+
 			if fetchset is None:
 				#print("mss_code : ", mss_code, mss_name, " has not data set")
 				sql_input = "insert into web_pm10(mss_code, created_date, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24)"
-				sql_input += " values(%d, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)"
-				print(sql_input)
-			#else:
+				sql_input += " values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+				#print(sql_input)
+
+				#for i in range(26):
+				#	print(data_list[dist_len][1][mss_len][i])
+				#
+				
+				try:
+					cur.execute(sql_input, data_tuple)
+					print(mss_code, " : " , mss_name, " data insert successful")
+				except:
+					print("mss_code : ", mss_code, " mss_name : ", mss_name, " data don't insert for DataBase")
+					pass
+
+			else:
 				sql_input = "update web_pm10 set " + t_hour + " = " + str(t_data)
 				sql_input += " where mss_code = " + str(mss_code)
+				sql_input += " and created_date = '" + searchDate + "';"
 		
-				print(sql_input)
+				#print(sql_input)
+				try:
+					cur.execute(sql_input)
+					print(mss_code, " : " , mss_name, " data update successful")
+				except:
+					print("mss_code : ", mss_code, " mss_name : ", mss_name, " data don't update for DataBase")
+					pass
+			
 		
-		#### 현재 작업 중인 곳 || hour + 1이 현재 시간에 data_list의 데이터가 맞음 
-		#### 근데 업데이트가 느려서 대략 측정 데이터가 20분 뒤에 올라오눈 둣
-		#### hour + 1로 조정하고 진행할 것	
 finally:
+	connection.commit()
 	connection.close()

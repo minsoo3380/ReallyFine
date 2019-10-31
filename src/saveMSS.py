@@ -78,7 +78,10 @@ try:
 			end_index = len(match.string)
 			mss_name = match.string[start_index:end_index]
 			print(mss_loc, " : ", mss_name)
-			
+			print("mss match string : ", match.string)
+			print("match group : ", match.group())
+			print("match names : ", mss_name)
+
 			#DB에 저장
 			try:
 				sql_check_mss = "select * from measure_station where mss_name like '%" + mss_name + "%' and dt_code = '" + dt_code + "';"
