@@ -40,7 +40,8 @@ else:
 	day = format(now.day, "02d")
 	hour = now.hour
 
-t_hour = "t" + str(hour - 1)
+t_hour = "t" + str(hour)
+print(t_hour)
 
 searchDate = year + "-" + month + "-" + day
 searchDate_f = searchDate.replace("-", "")[0:6]
@@ -177,10 +178,12 @@ try:
 			#print(data_list[dist_len][1][mss_len])
 			#t_data : 현재 시간 측정된 데이터
 			pre_mss_name = data_list[dist_len][1][mss_len][1]
-			print("current hour : ", hour)
-			print("cur data : ", data_list[dist_len][1][mss_len]) 
-			t_data = data_list[dist_len][1][mss_len][hour + 1]
-			print("t_data : ", t_data)			
+
+			#여기도 마찬가지로 변경
+			#print("current hour : ", hour)
+			#print("cur data : ", data_list[dist_len][1][mss_len]) 
+			#t_data = data_list[dist_len][1][mss_len][hour + 1]
+			#print("t_data : ", t_data)			
 
 			#패턴 매칭
 			match = pattern.match(pre_mss_name)
@@ -199,7 +202,10 @@ try:
 				mss_code = fetchset[0]
 			except:
 				print("there is not existence mss_code of ", mss_name, " check a DataBase")
-				sys.exit()
+				print("we found new measure station of fine dust")
+				os.system("sudo python3 saveMSS10.py")
+				print("save the new mss_locatation please again restart this program")
+				pass
 
 			#print("mss_name : ", mss_name, "|| mss_code : ", mss_code)
 			# 데이터가 없다면 insert 있다면 update!
@@ -237,12 +243,21 @@ try:
 				try:
 					cur.execute(sql_input, data_tuple)
 					print(mss_code, " : " , mss_name, " data insert successful")
-				except:
+				except Exception as ex:
 					print("mss_code : ", mss_code, " mss_name : ", mss_name, " data don't insert for DataBase")
+					print("Exception : ", ex)
 					pass
 
 			else:
-				sql_input = "update web_pm10 set " + t_hour + " = " + str(t_data)
+				update_set = ""
+
+				for index_update in range(2, 26):
+					t_hour = "t" + str(index_update - 1)
+					update_set += t_hour + " = " + str(data_list[dist_len][1][mss_len][index_update])
+					if index_update != 25:
+						update_set += ", "
+
+				sql_input = "update web_pm10 set " + update_set
 				sql_input += " where mss_code = " + str(mss_code)
 				sql_input += " and created_date = '" + searchDate + "';"
 		
@@ -250,8 +265,9 @@ try:
 				try:
 					cur.execute(sql_input)
 					print(mss_code, " : " , mss_name, " data update successful")
-				except:
+				except Exception as ex:
 					print("mss_code : ", mss_code, " mss_name : ", mss_name, " data don't update for DataBase")
+					print("Exception : ", ex)
 					pass
 			
 		
