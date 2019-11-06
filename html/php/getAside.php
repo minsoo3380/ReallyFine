@@ -2,6 +2,9 @@
 	$param = $_REQUEST['RFmenu'];
 	$aside_pid = null;
 	$aside_id = null;
+	
+	$server_url_bridge = null;
+	$server_url_wifi = null;
 
 	switch($param){
 		case "900":
@@ -71,12 +74,15 @@
 
 	echo '<ul class="ASParent"><li>'.$p_title.'</li><ul>';
 
+	$server_url_bridge = 'http:112.186.204.239:50000/ReallyFine/html/';
+	$server_url_wifi = '192.168.239.130/ReallyFine/html/';
+
 	while($cur_menu = $st->fetch()){
 		$link_sql = "select * from web_url where id = ".$cur_menu[id];
 		$st2 = $pdo->query($link_sql);
 		$cur_url = $st2->fetch();
 
-		echo '<a href = "http://112.186.204.239:50000/ReallyFine/html/'.$cur_url[url].'"><li>'.$cur_menu[title].'</li></a>';
+		echo '<a href = "http://192.168.239.130/ReallyFine/html/'.$cur_url[url].'"><li>'.$cur_menu[title].'</li></a>';
 	
 		//echo count($cur_menu);		
 		//echo " $cur_menu[id], $cur_menu[title]";
@@ -94,7 +100,7 @@
 				
 				if(strcmp($aside_id, $child[id]) == 0)
 					echo '<img src="images/cur_site.png">';
-				echo '<a href = "http://112.186.204.239:50000/ReallyFine/html/'.$child_url[url].'"><li>'.$child[title].'</li></a>';
+				echo '<a href = "http://192.168.239.130/ReallyFine/html/'.$child_url[url].'"><li>'.$child[title].'</li></a>';
 		
 				$child = $st3->fetch();
 			}

@@ -9,12 +9,18 @@
 	$user = "root";
 	$pass = "123123";
 
+	$type = null;
+	
 	if($param_sec == "1200"){
 		$table_max = null;
+	}else if($param_sec == "1000"){
+		$type = "web_pm10";
+	}else if($param_sec == "1100"){
+		$type = "web_pm25";
 	}else{
 		$table_max = 24;
 	}
-	
+
 	try{
 		$pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -23,22 +29,108 @@
 		echo $e->getMessage();
 	}
 	
-	switch($param_sec){
-		case "1000":
-			/*
-			$sql = "select m.mss_location, m.mss_name, p.data_value, p.created_time from measure_station as m join public_data_pm10 as p on m.mss_code=p.mss_code where p.created_date = '".$param_date."' order by m.mss_code, cast(created_time as unsigned) asc;";
-			//echo $sql;
-
-			$st = $pdo->query($sql);
-			table_writer($st);			
-			*/
-			break;
-		case "1100":
-			$sql = "select m.mss_location, m.mss_name, p.data_value, p.created_time from measure_station as m join public_data_pm25 as p on m.mss_code=p.mss_code where p.created_date = '".$param_date."' order by m.mss_code, cast(created_time as unsigned) asc;";
+	function table_writer($st, $p_date){
+		$param_type = $_REQUEST['type'];
+		$data = $st->fetchAll();
 		
-			$st = $pdo->query($sql);
-			table_writer($st);
+		if($param_type == 0){
+			echo "<thead><th>측정망</th><th>측정소명</th>";
+	
+			for($i = 0;$i < 24;$i++){
+				echo "<th>".(string)($i + 1)."</th>";
+			}
+			
+			echo "</thead>";
+	
+			echo "<tbody>";
+	
+			for($i = 0;$i < count($data);$i++){
+				echo "<tr>";
+	
+				for($j = 0;$j < 26;$j++){
+					echo "<td>";
+					
+					if($data[$i][$j] == -1){
+						echo "-";
+					}else if($data[$i][$j] == -2){
+						echo "";
+					}else{
+						echo $data[$i][$j];
+					}
+					echo "</td>";
+				}
+				
+				echo "</tr>";
+			}
+	
+			echo "</tbody>";
+		}else if($param_type == 1){
+			$year = (int)substr($p_date, 0, 4);
+			$mon = (int)substr($p_date, 5, 2);
+			$day = (int)date("d");
+			
+			$months = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+			
+			if( (($year % 4 == 0) && ($year % 100 != 0)) || ($year % 400 == 0) )
+				$months[1] = 29;
 
-			break;
+			echo "<thead><th>측정망</th><th>측정소명</th>";
+
+			for($i = 0;$i < $months[$mon - 1];$i++){
+				echo "<th>".(string)($i + 1)."</th>";
+			}
+
+			echo "</thead>";
+			echo "<tbody>";
+			
+			$day_cnt = 0;
+			$str_td = null;
+
+			for($i = 0;$i < (int)(count($data));$i++){			
+				$sum = 0;
+				$count = 0;
+				
+				if($day_cnt == 0){	
+					echo "<tr>";
+					echo "<td>".$data[$i][0]."</td><td>".$data[$i][1]."</td>";
+				}
+
+				for($j = 2;$j < 26;$j++){
+					if($data[$i][$j] == -1 || $data[$i][$j] == -2)
+						continue;
+					$sum = $sum + $data[$i][$j];
+					$count = $count + 1;
+				}
+				$avg = (int)($sum / $count);
+				
+				$str_td = $str_td."<td>".(string)($avg)."</td>";
+				$day_cnt = $day_cnt + 1;
+				
+				if($day_cnt == $day){
+					echo $str_td."</tr>";
+					$day_cnt = 0;
+					$str_td = null;
+				}
+			}
+		}
 	}
+	
+	//1이 평균 0이 일반
+	$sql = "select m.mss_location, m.mss_name, ";
+	
+	for($i = 0;$i < 24;$i++){
+		$str = "t".(string)($i + 1);
+
+		$sql = $sql.$str;
+
+		if($i != 23){
+			$sql = $sql.", ";
+		}
+	}
+
+	$sql = $sql." from measure_station as m join ".$type." as w on m.mss_code=w.mss_code where m.dt_code = '".$param_dist."' and w.created_date like '%".$param_date."%'";
+
+	$st = $pdo->query($sql);
+	
+	table_writer($st, $param_date);	
 ?>

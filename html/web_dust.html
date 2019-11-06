@@ -7,13 +7,19 @@
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<script type="text/javascript">
 			var RFmenu = getQuery('RFmenu');
+			var type = null;
 			var ServerDate = new Date();
 			var Year = ServerDate.getFullYear();
 			var Month = ServerDate.getMonth() + 1;
 			var Day = ServerDate.getDate();
-		
+			var radio_value = 0;
+			
 			if(Month < 10){
 				Month = "0" + Month;
+			}
+
+			if(Day < 10){
+				Day = "0" + Day;
 			}
 
 			var SearchDate = Year + '-' + Month + '-' + Day;
@@ -21,11 +27,11 @@
 			$(document).ready(function(){
 				var input_Date = document.getElementById("searchDate");
 				input_Date.value = SearchDate;
-				
+
 				setSearchDate();
 				$("#avg_year").val(ServerDate.getFullYear()).prop("selected", true);
 				$("#avg_mon").val(Month).prop("selected", true);
-				console.log(Month);
+				console.log("Month : ", Month);
 
 				$(function(){
 					$("#header").load("logo.html");
@@ -39,13 +45,12 @@
 					$("#aside").append(data);
 				});
 			
-				$.get("php/getTable.php?section=" + RFmenu + "&date=" + SearchDate, function(data){
-					$("#data_table").append(data);
-				});
-			
 				$.get("php/getLocation.php?district=02", function(data){
 					$("#district").append(data);
 				});
+				
+				change_Menu(radio_value);
+				getTableData();
 			});
 			
 			function setSearchDate(){
@@ -91,9 +96,61 @@
 					}
 				}
 			}
+
+			function change_Menu(value){
+				type1 = document.getElementById("DateType1");
+				type2 = document.getElementById("DateType2");
+
+				if(value == 0){
+					//console.log("radio value : ", radio_value);
+					type1.style.display = 'inline';
+					type2.style.display = 'none'
+					radio_value = 0;
+				}else{
+					//console.log("radio value : ", radio_value);
+					type1.style.display = 'none';
+					type2.style.display = 'inline';
+					radio_value = 1;
+				}
+			}
+
+			function getTableData(){
+				switch(radio_value){
+					case 0:
+						$("#data_table").empty();
+
+						value_date = document.getElementById("searchDate").value;
+						value_district = document.getElementById("district").value;
+
+						param_script = "section=" + RFmenu + "&type=0&district=" + value_district + "&date=" + value_date;
+
+						$.get("php/getTable.php?" + param_script, function(data){
+							$("#data_table").append(data);
+						});
+
+						break;
+					case 1:
+						$("#data_table").empty();
+						value_year = document.getElementById("avg_year").value;
+						value_mon = document.getElementById("avg_mon").value;
+						value_date = value_year + "-" + value_mon;
+						console.log(value_date);
+						value_district = document.getElementById("district").value;
+
+						param_script = "section=" + RFmenu + "&type=1&district=" + value_district + "&date=" + value_date;
+						
+						console.log(param_script);
+				
+						$.get("php/getTable.php?" + param_script, function(data){
+							$("#data_table").append(data);
+						});
+
+						break;
+				}
+			}
 		</script>
 	</head>
-
+                                                                    
 	<body>
 		<header id="header">
 		</header>
@@ -110,9 +167,9 @@
 			</article>
 			<article id="search_head">
 				<h5>데이터 구분</h5>
-				<input type="radio" id="dataType_day" name="dataType" value="0" checked>
+				<input type="radio" id="dataType_day" name="dataType" value="0" onclick="change_Menu(this.value)" checked>
 				<label for="dataType_day">시간</label>
-				<input type="radio" id="dataType_mon" name="dataType" value="1">
+				<input type="radio" id="dataType_mon" name="dataType" value="1" onclick="change_Menu(this.value)">
 				<label for="dataType_mon">일평균</label>
 				<span id="DateType1">
 					<input id="searchDate" type="date">
@@ -122,13 +179,13 @@
 					<select id="avg_mon"></select>
 				</span>
 				<select id="district"></select>
-				<input id="updateTable" name="updateTable" type="button" value="검색">
+				<input id="updateTable" name="updateTable" type="button" value="검색" onclick="getTableData()">
 				<input id="CallGraph" name="CallGraph" type="button" value="그래프 보기">
 				<img src="images/excel.png">
 			</article>
 		
-			<article id="data_table">
-				
+			<article id="table_atc">
+				<table id="data_table" border="1"></table>	
 			</article>
 		</section>
 
