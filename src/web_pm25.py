@@ -42,6 +42,9 @@ searchDate = year + "-" + month + "-" + day
 searchDate_f = searchDate.replace("-", "")[0:6]
 connection = pymysql.connect(host=host, user=user, password=pswd, db=dbname, charset=chrset)
 
+# log : current time
+print("===========================================================================")
+print(sys.argv[0], " | current time :  ", searchDate)
 #print(searchDate)
 
 try:
@@ -68,7 +71,7 @@ try:
 	data_list = []
 
 	#district 확인	
-	print("다음 지역의 정보를 검색합니다.\n\n", district, "\n")
+	print("district list : \n\n", district, "\n")
 
 	#지역번호별 테이블 검색 및 저장
 	while dis_index < len(district):
@@ -113,18 +116,18 @@ try:
 				text_data = elements[(i * p_size) + j].text
 				
 				if text_data == "":
-					print("Null")
+					#print("Null")
 					mss_list.append(-2)
 				elif text_data == "-":
-					print(text_data)
+					#print(text_data)
 					mss_list.append(-1)
 				else:
 					mss_list.append(text_data)
-					print(text_data)
+					#print(text_data)
 
 			local_list.append(mss_list)
 			all_list.append(mss_list)
-			print("current mss_list : ", mss_list)
+			#print("current mss_list : ", mss_list)
 			
 			
 		#지역별 리스트 저장
@@ -132,7 +135,7 @@ try:
 		tmp_list.append(dt_code)
 		tmp_list.append(local_list)
 		data_list.append(tmp_list)
-		print("\n")
+		#print("\n")
 	
 	print("All data length : ", len(all_list), "Sum of list_count : ", list_count)
 	#print("All data list : ", data_list)

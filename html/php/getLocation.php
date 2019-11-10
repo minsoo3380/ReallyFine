@@ -20,9 +20,14 @@
 	if($param_dist != NULL){
 		$sql = "select * from district";
 		$st = $pdo->query($sql);
+		$i = 0;
 
 		while($row = $st->fetch()){
-			echo '<option value="'.$row['dt_code'].'">'.$row['dt_name'].'</option>';
+			if($i == 0)
+				echo '<option value="'.$row['dt_code'].'" selected>'.$row['dt_name'].'</option>';
+			else
+				echo '<option value="'.$row['dt_code'].'">'.$row['dt_name'].'</option>';
+			$i = $i + 1;
 		}
 	}else if($param_local != NULL){
 		$sql = "select * from measure_station where dt_code = '".$param_local."'";

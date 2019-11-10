@@ -1,3 +1,5 @@
+#!//usr/lib/python3.5
+
 # 미세먼지 저장 스크립트 
 # pm10, pm2.5 둘다 저장
 # argv[1], argv[2] 날짜 지정
@@ -12,8 +14,8 @@ from datetime import date
 # len(argv) == 3 : 앞의 날짜 부터 뒤의 날짜까지 저장
 
 function = 0
-base_cmd10 = "sudo python3 web_pm10.py "
-base_cmd25 = "sudo python3 web_pm25.py "
+base_cmd10 = "sudo python3 /var/www/html/ReallyFine/src/web_pm10.py "
+base_cmd25 = "sudo python3 /var/www/html/ReallyFine/src/web_pm25.py "
 command = []
 
 def IsLeapYear(year):

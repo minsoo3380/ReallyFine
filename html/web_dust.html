@@ -52,7 +52,7 @@
 				change_Menu(radio_value);
 				getTableData();
 			});
-			
+		
 			function setSearchDate(){
 				var selector_year = document.getElementById("avg_year");
 				var selector_mon = document.getElementById("avg_mon");
@@ -121,9 +121,13 @@
 
 						value_date = document.getElementById("searchDate").value;
 						value_district = document.getElementById("district").value;
+						//console.log("discript : ", value_district);
+						if(value_district == null || value_district == '')
+							value_district = '02';
 
 						param_script = "section=" + RFmenu + "&type=0&district=" + value_district + "&date=" + value_date;
 
+						//console.log(param_script);
 						$.get("php/getTable.php?" + param_script, function(data){
 							$("#data_table").append(data);
 						});
@@ -133,8 +137,12 @@
 						$("#data_table").empty();
 						value_year = document.getElementById("avg_year").value;
 						value_mon = document.getElementById("avg_mon").value;
+						
+						if(value_district == null || value_district == '')
+							value_district = '02';
+						
 						value_date = value_year + "-" + value_mon;
-						console.log(value_date);
+						//console.log(value_date);
 						value_district = document.getElementById("district").value;
 
 						param_script = "section=" + RFmenu + "&type=1&district=" + value_district + "&date=" + value_date;
