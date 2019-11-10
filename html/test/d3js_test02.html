@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang = "ko">
+<head>
+	<meta charset="utf-8">
+	<title>d3 test 002</title>
+	<script type="text/javascript" src="../js/d3.js"></script>
+</head>
+
+<body>
+	<div>
+		Hello World!
+	</div>
+	<div id="div2">
+		Good today
+	</div>
+	<script>
+		console.log(d3.select("div").text());
+		console.log(d3.select("#div2").text());
+		alert(d3.select("div").text());
+	</script>
+</body>
+
+</html>

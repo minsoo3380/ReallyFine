@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang = "ko">
+<head>
+	<meta charset="utf-8">
+	<title>select and append</title>
+	<script src="../js/d3.js"></script>
+</head>
+
+<body>
+	<div class="myclass">
+		Hello World!
+	</div>
+	
+	<script>
+		var t1 = d3.select(".myclass");
+		t1.append("span").text("from D3.js");
+		console.log( t1.append("span") );
+	</script>
+</body>
+
+</html>

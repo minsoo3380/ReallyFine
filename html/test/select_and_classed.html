@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang = "ko">
+<head>
+	<meta charset="utf-8">
+	<script src="../js/d3.js"></script>
+</head>
+
+<body>
+	<div class="myclass">
+		Hello World!
+	</div>
+	
+	<span class="yourclass"></span>
+
+	<script>
+		var cls = d3.select(".myclass");
+		var element = d3.select(".yourclass");
+
+		cls.classed("another", true);
+		console.log("class : ", cls.classed("another"));
+
+		cls.classed("another", false);
+		console.log("class : ", cls.classed("another"));
+
+		// togle class example
+		// 상황 체크해서 있으면 제거 없으면 생성
+		cls.classed("myanotherclass", !element.classed("myanotherclass"));
+		console.log("class : ", cls.classed("myanotherclass"));
+		
+	</script>
+</body>
+
+</html>
+
