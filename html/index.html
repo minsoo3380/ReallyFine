@@ -6,8 +6,50 @@
 		<link rel="stylesheet" type="text/css" href="css/index.css"/>
 		<script src="js/jquery-3.4.0.js"></script>
 		<script src="js/d3.js"></script>
-		<script src="http://d3js.org/topojson.v1.min.js"></script>
+		<script src="https://unpkg.com/topojson@3"></script>
+		<!--<script src="http://d3js.org/topojson.v1.min.js"></script>-->
 		<script type="text/javascript">
+			var apiGeolocationSuccess = function(position) {
+				alert("API geolocation success!\n\nlat = " + position.coords.latitude + "\nlng = " + position.coords.longitude);
+			};
+
+			var tryAPIGeolocation = function() {
+				jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDCa1LUe1vOczX1hO_iGYgyo8p_jYuGOPU", function(success) {
+				apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
+				}).fail(function(err) {
+					alert("API Geolocation error! \n\n"+err);
+				});
+			};
+
+			var browserGeolocationSuccess = function(position) {
+				alert("Browser geolocation success!\n\nlat = " + position.coords.latitude + "\nlng = " + position.coords.longitude);
+			};
+
+			var browserGeolocationFail = function(error) {
+				switch (error.code) {
+					case error.TIMEOUT:
+						alert("Browser geolocation error !\n\nTimeout.");
+						break;
+					case error.PERMISSION_DENIED:
+						if(error.message.indexOf("Only secure origins are allowed") == 0) {
+							tryAPIGeolocation();
+						}
+						break;
+					case error.POSITION_UNAVAILABLE:
+						alert("Browser geolocation error !\n\nPosition unavailable.");
+						break;
+				}
+			};
+
+			var tryGeolocation = function() {
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(
+						browserGeolocationSuccess,
+						browserGeolocationFail,
+						{maximumAge: 50000, timeout: 20000, enableHighAccuracy: true});
+				}
+			};
+
 			$(document).ready(function(){
 				$(function(){
 					
@@ -23,6 +65,196 @@
 				});
 				
 				korea_map();
+				//tryGeolocation();
+				geoloc_map();
+			});
+		</script>
+
+		<script type="text/javascript">
+			var curDate = new Date();
+			var townYear = curDate.getFullYear();
+			var townMon = curDate.getMonth() + 1;
+			var townDay = curDate.getDate();
+		
+			//현재 위치 좌표 
+			function geoloc_map(){
+				if(navigator.geolocation){
+					console.log("o");
+						
+					navigator.geolocation.getCurrentPosition(function(pos){
+						var latitude = pos.coords.latitude;
+						var longitude = pos.coords.longitude;
+						
+						console.log("loc : ", latitude, ", ", longitude);
+						
+						//현재 위치 주소 설정
+						getCurLoc(latitude, longitude);
+					
+						//TM 좌표계 설정
+						fetchAuth(latitude, longitude);
+					});
+				}else{
+					console.log("x");
+					alert("해당 브라우저에서 GPS데이터가 지원되지 않습니다.");
+
+					var town_loc = document.getElementById("mytown_loc");
+					town_loc.innerHTML = "GPS정보 사용 불가";
+				}
+			}
+
+			//현재 위치 주소 설정
+			function getCurLoc(latitude, longitude){
+				var url = "php/getCurLoc.php?posX=" + latitude + "&posY=" + longitude;
+				console.log(url);
+				$.ajax({
+					type:"GET",
+					url:url,
+					dataType:"json",
+					async:true,
+					success: function(data){
+						var obj = JSON.parse(data);
+						var doc_loc = document.getElementById("mytown_loc");
+						doc_loc.innerHTML = "접속위치 : " + obj.results[0].formatted_address;
+						//console.log(obj);
+						//console.log(obj.results[0].formatted_address);
+						
+					}
+				});
+			}
+
+			//TM좌표계 변환
+			//long : 경도, lat : 위도
+			//posX : 경도, posY : 위도
+			function transeTM(accessToken, latitude, longitude){
+				const API_TRANS = "https://sgisapi.kostat.go.kr/OpenAPI3/transformation/transcoord.json";
+				const WGS84 = 4326; //경위도
+				const GRS80 = 5181; //중부원점 
+
+				var url = API_TRANS + "?accessToken=" + accessToken;
+					url += "&src=" + WGS84 + "&dst=" + GRS80;
+					url += "&posX=" + longitude + "&posY=" + latitude;
+
+				console.log(url);
+
+				fetch(url)
+					.then(reponse => reponse.json())
+					.then(data => {
+						console.log("transe Result");
+						console.log(data);
+						
+						//가장 가까운 측정소 확인 함수 call
+						nearMss(data.result.posX, data.result.posY);
+						
+					})
+					.catch(error => {
+						console.log("error");
+						console.log(error);
+					});
+			}
+			
+			//가장 가까운 측정소
+			function nearMss(posX, posY){
+				var url = "php/getMssNear.php?" + "posX=" + posX + "&posY=" + posY;
+				//console.log(url);
+
+				$.ajax({
+					type:"GET",
+					url: url,
+					dataType:"json",
+					async:true,
+					success:function(data){
+						var obj = JSON.parse(data);
+						var near = document.getElementById("mss_near");	
+						var loc = document.getElementById("mss_loc");	
+
+						//console.log("before town : ", obj);
+						//console.log(obj.list[0].stationName);
+
+						townMssData(obj);
+					}
+				});
+			}
+
+			//현재 위치 가까운 측정소 데이터
+			function townMssData(obj){
+				for(i = 0;i < obj.list.length;i++){
+					var station = obj.list[i].stationName;
+					var url = "php/getTownData.php?station=" + station;
+					//console.log(url);
+
+					var xhr = $.ajax({
+						type:"GET",
+						url:url,
+						dataType:"json",
+						async:true,
+					})
+					.done(function(data){
+						var data_obj = JSON.parse(data);
+						//console.log(data_obj);
+
+						if(data_obj.list[0].pm10Value != null && data_obj.list[0].pm10Value != "-" && data_obj.list[0].pm10Value != ""){
+							//xhr.abort();
+							var near = document.getElementById("mss_near");	
+							var pm10 = document.getElementById("mss_pm10");
+							var pm10N = document.getElementById("mss_pm10N");
+							var pm25 = document.getElementById("mss_pm25");
+							var pm25N = document.getElementById("mss_pm25N");
+							
+							near.innerHTML = data_obj.ArpltnInforInqireSvcVo.stationName;
+							pm10.innerHTML = data_obj.list[0].pm10Value;
+							pm10N.innerHTML = data_obj.list[0].pm10Value24;
+							pm25.innerHTML = data_obj.list[0].pm25Value;
+							pm25N.innerHTML = data_obj.list[0].pm25Value24;
+							
+						}
+					});
+				}
+			}
+
+			//인증토큰 요청
+			function fetchAuth(latitude, longitude){
+				const API_AUTH = "https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json";
+				const MY_KEY = "9dc320c2258e4dbf8cce";
+				const MY_SECRET = "fec8037fae2a4263beec";
+
+				var url = API_AUTH + "?consumer_key=" + MY_KEY + "&consumer_secret=" + MY_SECRET;
+				console.log(url);
+		
+				fetch(url)
+					.then(response => response.json())
+					.then(data => {
+						console.log("fetchAuth Result");
+						console.log(data);
+						transeTM(data.result.accessToken, latitude, longitude);
+				})
+				.catch(error => {
+					console.log("error");
+					console.log(error);
+				});
+			}
+
+			function addZeros(num, digit){
+				var zero = '';
+				num = num.tostring();
+				
+				if(num.length < digit){
+					for (i = 0;i < digit - num.length;i++){
+						zero += '0';
+					}
+				}
+				return zero + num;
+			}
+
+			function changeTownDate(year, mon, day){
+				console.log("start change town Date");
+				var town_time = document.getElementById("mytown_time");
+				
+				town_time.innerHTML = (year + "-"  + mon + "-"  + day);
+			}
+
+			$(document).ready(function(){
+				
+				changeTownDate(townYear, townMon, townDay);
 			});
 		</script>
 	</head>
@@ -52,16 +284,36 @@
 
 				<div id="view_mytown">
 					<div id="mytown_banner">
-						<p id="mytown_time">2019-11-21</p>
-						<p id="mytown_pm">미세먼지(PM10)</p>
+						<p id="mytown_time"></p>
+						<p id="mytown_pm">미세먼지(PM10/PM25)</p>
 						<p id="mytown_titleL">우리동네</p>
 						<p id="mytown_titleR">대기정보</p>
-						<p id="mytown_loc">상당구</p>
+						<p id="mytown_loc"></p>
 					</div>
 
 					<div id="mytown_view">
-						<table id="mytown_table">테이블</table>
-						<div id="mytown_graph">그래프</div>
+						<table id="mytown_table">
+							<thead>
+								<tr>
+									<th>근접 측정소명</th>
+									<th>PM10</th>
+									<th>PM25</th>
+									<th>PM10 예측치</th>
+									<th>PM25 예측치</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td id="mss_near"></td>
+									<td id="mss_pm10"></td>
+									<td id="mss_pm25"></td>
+									<td id="mss_pm10N"></td>
+									<td id="mss_pm25N"></td>
+								</tr>
+							</tbody>
+							<tfoot>
+							</tfoot>
+						</table>
 					</div>
 				</div>
 			</article>

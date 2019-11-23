@@ -836,3 +836,106 @@ Traceback (most recent call last):
   File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
     output = open("../html/data/fine_dust_mss.json", "w")
 FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/urllib3/connection.py", line 137, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "/usr/lib/python3/dist-packages/urllib3/util/connection.py", line 67, in create_connection
+    for res in socket.getaddrinfo(host, port, 0, socket.SOCK_STREAM):
+  File "/usr/lib/python3.5/socket.py", line 732, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -3] Temporary failure in name resolution
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 560, in urlopen
+    body=body, headers=headers)
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 354, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "/usr/lib/python3.5/http/client.py", line 1122, in request
+    self._send_request(method, url, body, headers)
+  File "/usr/lib/python3.5/http/client.py", line 1167, in _send_request
+    self.endheaders(body)
+  File "/usr/lib/python3.5/http/client.py", line 1118, in endheaders
+    self._send_output(message_body)
+  File "/usr/lib/python3.5/http/client.py", line 944, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.5/http/client.py", line 887, in send
+    self.connect()
+  File "/usr/lib/python3/dist-packages/urllib3/connection.py", line 162, in connect
+    conn = self._new_conn()
+  File "/usr/lib/python3/dist-packages/urllib3/connection.py", line 146, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+requests.packages.urllib3.exceptions.NewConnectionError: <requests.packages.urllib3.connection.HTTPConnection object at 0x7f3a49873898>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 376, in send
+    timeout=timeout
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 610, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/usr/lib/python3/dist-packages/urllib3/util/retry.py", line 283, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+requests.packages.urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='openapi.airkorea.or.kr', port=80): Max retries exceeded with url: /openapi/services/rest/MsrstnInfoInqireSvc/getMsrstnList?_returnType=json&numOfRows=468&ServiceKey=2PuKO1q0Q%2Ftx7rBWUUUVCO5xzzuLRVLj6ocZPCVsWE96i9p6SzkLzDulR2RDDTbAHgI26d3TW%2B3JFpd1n5emJw%3D%3D (Caused by NewConnectionError('<requests.packages.urllib3.connection.HTTPConnection object at 0x7f3a49873898>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 20, in <module>
+    req = requests.get(request_url)
+  File "/usr/lib/python3/dist-packages/requests/api.py", line 67, in get
+    return request('get', url, params=params, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/api.py", line 53, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 480, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 588, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 437, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='openapi.airkorea.or.kr', port=80): Max retries exceeded with url: /openapi/services/rest/MsrstnInfoInqireSvc/getMsrstnList?_returnType=json&numOfRows=468&ServiceKey=2PuKO1q0Q%2Ftx7rBWUUUVCO5xzzuLRVLj6ocZPCVsWE96i9p6SzkLzDulR2RDDTbAHgI26d3TW%2B3JFpd1n5emJw%3D%3D (Caused by NewConnectionError('<requests.packages.urllib3.connection.HTTPConnection object at 0x7f3a49873898>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution',))
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
