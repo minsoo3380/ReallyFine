@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head lang="ko">
+	<meta charset="utf-8">
+	<title>Really Fine?</title>
+	<script src="../js/jquery-3.4.0.js"></script>
+	<script type="text/javascript">
+		var data;
+
+		$(document).ready(function(){
+			$.ajax({
+				'async': false,
+				'global': false,
+				'url': "test_spot2.json",
+				'dataType': "json",
+				'success': function(_data){
+					data = _data;
+				}
+			});
+
+			console.log(data);
+			console.log(data.list);
+			console.log(data.list[0].mem);
+		});
+	</script>
+</body>
+</html>

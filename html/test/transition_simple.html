@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang = "ko">
+<head>
+	<meta charset="utf-8">
+	<script src="../js/d3.js"></script>
+</head>
+
+<body>
+	<h3>Simple transitions</h3>
+	<script>
+		d3.select("body").transition().delay(1000)
+		.style("background-color", "lightblue");
+		
+		d3.select("body").transition().delay(2000)
+		.style("background-color", "green");
+	</script>
+</body>
+
+</html>

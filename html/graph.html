@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head lang="ko">
+	<meta charset="utf-8">
+	<title>Graph</title>
+	<script src="js/jquery-3.4.0.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		var param_date = getQuery('date');
+		var param_RFmenu = getQuery('RFmenu');
+		var param_dateType = getQuery('dateType');
+		var param_district = getQuery('district');
+	
+		var TopTitle = null;
+		var RFurl = "php/getRFData.php?" + "date=" + param_date + "&RFmenu=" + param_RFmenu + "&dateType=" + param_dateType + "&district=" + param_district;
+		
+		$(document).ready(function(){
+			switch(param_RFmenu){
+			case "1000":
+				TopTitle = "미세먼지(pm10)";
+				break;
+			case "1100":
+				TopTitle = "초미세먼지(pm25)";
+				break;
+			case "1200:":
+				TopTitle = "AWS";
+				break;
+			}
+		});
+
+		function getQuery(param){
+			var url = window.location.search.substring(1);
+			var url_arr = url.split('&');
+			
+			for(var i = 0;i < url_arr.length;i++){
+				var key_value = url_arr[i].split("=");
+				if(key_value[0] == param){
+					return key_value[1];
+				}
+			}
+		}
+		
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.setOnLoadCallback(DrawChart);
+		// 가져온 json 데이터를 차트화
+		function DrawChart(){
+			var url = RFurl;
+			console.log("start DrawChart");
+			var jsonData = $.ajax({
+				url:url,
+				dataType:"json",
+				async:false
+			}).responseText;
+			
+			var data = new google.visualization.DataTable(jsonData);
+			/*
+			var control = new google.visualization.ControlWrapper({
+				controlType: 'DateRangeFilter',
+				containerId: 'controlFrame',
+				options:{
+					filterColumnIndex: 0
+				}
+			});
+			
+			var series = {
+ 		 		0: {
+			            hidden: false,
+			            visibleInLegend: false,
+	        		    color: '#FF0000'
+			        },
+			        1: {
+ 			            hidden: false,
+			            color: '#FF0000',
+			            altColor: '#808080'
+			        },
+ 			        2: {
+ 			            hidden: false,
+			            visibleInLegend: false,
+   			            color: '#00FF00'
+			        },
+			        3: {
+    			            hidden: false,
+  			            color: '#00FF00',
+ 			            altColor: '#808080'
+			        },
+  			        4: {
+     			            hidden: false,
+     			            visibleInLegend: false,
+   			            color: '#0000FF'
+			        },
+			        5: {
+			            hidden: false,
+ 			            color: '#0000FF',
+			            altColor: '#808080'
+			        }
+			};
+			*/
+			var options = {
+				width:1000,
+				height:500,
+				title: TopTitle,
+				legend:{position:'bottom'},
+				animation:{
+					duration:5000,
+					easing:'in',
+				},
+				vAxis: {minValue:0, maxValue:200},
+				hAxis: {minValue:0}
+			};
+			/*
+			var view = new google.visualization.DataView(data);
+			var chart = new google.visualization.LineChart(document.getElementById('chartFrame'));
+			
+			google.visualization.events.addListener(chart, 'select', function(){
+				if(typeof chart.getSelection()[0]['row'] === 'undefined'){
+					var col = view.getTableColumnIndex(chart.getSelection()[0]['column']) -1;
+					series[col - 1].hidden = !series[col - 1].hidden;
+
+					var tmpColor = series[col].color;
+					series[col].color = series[col].altColor;
+					series[col].altColor = tmpColor;
+
+					view.setColumns([0,1,2,3,4,5,6]);
+
+					var hiddenCols = [];
+					options.series = [];
+					for(var i = 0;i < 6;i++){
+						if(series[i].hidden){
+							hiddenCols.push(i+1);
+						}
+						else{
+							options.series.push(series[i]);
+						}
+					}
+		
+					view.hideColumns(hiddenCols);
+					chart.draw(view, options);
+				}
+			});
+			*/
+			DustChart = new google.visualization.LineChart(document.getElementById('chartFrame'));
+			DustChart.draw(data, options);
+			//chart.draw(view, options);
+		}
+	</script>
+</head>
+
+<body>
+	<!--	
+	<div id="dashboard">
+		<div id="chartFrame"></div>
+		<div id="legendFrame"></div>
+		<div id="controlFrame"></div>
+		<div id="messageFrame"></div>
+	</div>
+	-->
+	<div id="chartFrame"></div>
+	
+</body>
+</html>

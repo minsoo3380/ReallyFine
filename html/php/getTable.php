@@ -12,7 +12,15 @@
 	$type = null;
 	
 	if($param_sec == "1200"){
-		$table_max = null;
+		if((int)$param_dist < 100){
+			$param_dist = "0".$param_dist;
+		}
+		$url = "https://www.weather.go.kr/cgi-bin/aws/nph-aws_txt_min_cal_test?".$param_date."&0&MINDB_30M&4".$param_dist."&m&K";
+		//echo $url."<br>";
+		$content = file_get_contents_utf8($url);
+		$content = remove_tag($content, array('p'));
+		echo $content;
+		exit;
 	}else if($param_sec == "1000"){
 		$type = "web_pm10";
 	}else if($param_sec == "1100"){
@@ -27,6 +35,20 @@
 		$pdo->exec("set names utf8");
 	}catch(Exception $e){
 		echo $e->getMessage();
+	}
+
+	function remove_tag($str, $remove_tags) {
+		foreach ($remove_tags as $key => $val) {
+			$str = preg_replace("/<{$val}[^>]*>/i", '', $str);
+			$str = preg_replace("/<\/{$val}>/i", '', $str);
+		}
+		return $str;
+	}
+
+	function file_get_contents_utf8($url){
+		$html = file_get_contents($url);
+		return mb_convert_encoding($html, 'UTF-8',
+			mb_detect_encoding($html, 'euc-kr, ISO-8859-1', true));
 	}
 	
 	function table_writer($st, $p_date){
@@ -67,12 +89,19 @@
 		}else if($param_type == 1){
 			$year = (int)substr($p_date, 0, 4);
 			$mon = (int)substr($p_date, 5, 2);
-			$day = (int)date("d");
+			$cur_mon = (int)date("m");
+			$day = 0;
 			
 			$months = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 			
 			if( (($year % 4 == 0) && ($year % 100 != 0)) || ($year % 400 == 0) )
 				$months[1] = 29;
+
+			if($mon != $cur_mon){
+				$day = $months[$mon - 1];
+			}else{
+				$day = (int)date("d");
+			}
 
 			echo "<thead><th>측정망</th><th>측정소명</th>";
 

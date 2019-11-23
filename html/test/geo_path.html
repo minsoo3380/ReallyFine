@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="ko">
+	<meta charset="utf-8">
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script src="https://d3js.org/topojson.v0.min.js"></script>
+	<style>
+		path{
+			stroke: white;
+			stroke-width: 0.5px;
+			fill: gray;
+		}
+		
+		/*
+		.stateTN { fill: red;}
+		.stateAP { fill: blue;}
+		.stateMP { fill: green;}
+		*/
+	</style>
+</head>
+
+<body>
+	<script>
+		var width = 500;
+		var height = 400;
+		var projection = d3.geoMercator().center([78,22])
+			.scale(680)
+			.translate([width / 2, height / 2]);
+		var svg = d3.select("body").append("svg")
+			.attr("width", width)
+			.attr("height", height);
+
+		var path = d3.geoPath()
+			.projection(projection);
+
+		d3.json("../bat/korea_line.json", function(error, topology){
+			g.selectAll("path")
+			.data(topojson.object(topology, topoloty.objects.states)
+			.geometries)
+			.enter()
+			.append("path")
+			.attr("class", function(d){ return "state" + d.id; })
+			.attr("d", path)
+		});
+	</script>	
+</body>
+
+</html>

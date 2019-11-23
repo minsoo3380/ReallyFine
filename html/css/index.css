@@ -1,0 +1,15 @@
+@charset = "utf-8";
+
+path{
+	fill: gainsboro;
+	stroke: white;
+	stroke-width: 1.5px;
+}
+
+path:hover{
+	fill: orange;
+}
+
+.click_spot{
+	fill:#2fa4e7;
+}

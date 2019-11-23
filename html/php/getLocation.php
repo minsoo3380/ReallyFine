@@ -1,6 +1,7 @@
 <?php
 	$param_local = $_REQUEST['local'];
 	$param_dist = $_REQUEST['district'];
+	$param_aws = $_REQUEST['_aws'];
 
 	$host = "localhost";
 	$db = "ReallyFine";
@@ -15,6 +16,21 @@
 		$pdo->exec("set names utf8");
 	}catch(Exception $e){
 		echo $e->getMessage();
+	}
+
+	if(strcmp($param_aws, "true") == 0){
+		$sql = "select * from AWSLocation";
+		$st = $pdo->query($sql);
+		$data = $st->fetchAll();
+
+		for($i = 0;$i < count($data);$i++){
+			if($i == 0)
+				echo '<option value="'.$data[$i][0].'" selected>'.$data[$i][1].'</option>';
+			else
+				echo '<option value="'.$data[$i][0].'">'.$data[$i][1].'</option>';
+		}
+		
+		exit;
 	}
 
 	if($param_dist != NULL){

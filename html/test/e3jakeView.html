@@ -2,41 +2,41 @@
 
 <html>
 
-	<head>
+<head>
 
-		<meta charset="utf-8">
+<meta charset="utf-8">
 
-		<title>Line_Controls_Chart</title>
+<title>Line_Controls_Chart</title>
 
 
-		<meta http-equiv="refresh" content="300">
-		<!-- jQuery -->
-		<script src="https://code.jquery.com/jquery.min.js"></script>
-		<!-- google charts -->
-		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<script src="https://www.google.com/jsapi"></script>
+<meta http-equiv="refresh" content="300">
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<!-- google charts -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://www.google.com/jsapi"></script>
 
-		<body>
-			<font size=5><center>서울시 종로구 미세먼지 농도 측정 그래프</center></font><br>
-			<div style="text-align:right; width: 1100px;">
-				<font size=1>
-					<font color=blue>Drnpm10Value</font>, <font color=red>Drnpm25Value</font>: 쿼드콥터 미세먼지 센서로 측정된 수치, <font color=orange>pm10Value</font>, <font color=green>pm25Value</font> : AirKorea에서 제공된 미세먼지 수치
-				</font>
-			</div>
+<body>
+<font size=5><center>서울시 종로구 미세먼지 농도 측정 그래프</center></font><br>
+<div style="text-align:right; width: 1100px;">
+<font size=1>
+<font color=blue>Drnpm10Value</font>, <font color=red>Drnpm25Value</font>: 쿼드콥터 미세먼지 센서로 측정된 수치, <font color=orange>pm10Value</font>, <font color=green>pm25Value</font> : AirKorea에서 제공된 미세먼지 수치
+</font>
+</div>
 
-			<div style="text-align:right; width: 908px;">
-				<font size=2>update : <span id="clock"></span></font><br>
-			</div>
+<div style="text-align:right; width: 908px;">
+<font size=2>update : <span id="clock"></span></font><br>
+</div>
 
-			<div id="Line_Controls_Chart">
-				<!-- 라인 차트 생성할 영역 -->
-				<div id="lineChartArea" style="padding:0px 20px 0px 0px;"></div>
-				<!-- 컨트롤바를 생성할 영역 -->
-				<div id="controlsArea" style="padding:0px 20px 0px 0px;"></div>
-			</div>
-		</body>
+<div id="Line_Controls_Chart">
+<!-- 라인 차트 생성할 영역 -->
+<div id="lineChartArea" style="padding:0px 20px 0px 0px;"></div>
+<!-- 컨트롤바를 생성할 영역 -->
+<div id="controlsArea" style="padding:0px 20px 0px 0px;"></div>
+</div>
+</body>
 
-		<script>
+<script>
 
 function printTime() {
 
@@ -56,113 +56,113 @@ window.onload = function() {         // 페이지가 로딩되면 실행
 
 }
 
-		</script>
+</script>
 
-	</head>
+</head>
 
 
-	<script>
+<script>
 
 var chartDrowFun = {
 
 
-	chartDrow : function(){
+chartDrow : function(){
 
-		var queryObject = "";
+		    var queryObject = "";
 
-		var queryObjectLen = "";
+		    var queryObjectLen = "";
 
-		$.ajax({
+		    $.ajax({
 
-			type : 'POST',
+type : 'POST',
 
-			url : 'data_read4.jsp',
+url : 'data_read4.jsp',
 
-			dataType : 'json',
+dataType : 'json',
 
-			success : function(data) {
+success : function(data) {
 
-				queryObject = eval('(' + JSON.stringify(data,null, 2) + ')');
+queryObject = eval('(' + JSON.stringify(data,null, 2) + ')');
 
-				queryObjectLen = queryObject.dustlist.length;
+queryObjectLen = queryObject.dustlist.length;
 
-				//alert('Total lines : ' + queryObjectLen + 'EA');
+//alert('Total lines : ' + queryObjectLen + 'EA');
 
-			},
+},
 
-			error : function(xhr, type) {
+error : function(xhr, type) {
 
-				//alert('server error occoured')
+//alert('server error occoured')
 
-				alert('server msg : ' + xhr.status)
+		alert('server msg : ' + xhr.status)
 
-			}
+	}
 
-		});
-
-
-		//날짜형식 변경하고 싶으시면 이 부분 수정하세요.
-
-		//var chartDateformat 	= 'yyyy년MM월dd일';
-
-		var chartDateformat 	= 'M.dd. HH:MM';
-
-		//라인차트의 라인 수
-
-		var chartLineCount    = 10;
-
-		//컨트롤러 바 차트의 라인 수
-
-		var controlLineCount	= 10;
+});
 
 
+//날짜형식 변경하고 싶으시면 이 부분 수정하세요.
 
-		function drawDashboard() {
+//var chartDateformat 	= 'yyyy년MM월dd일';
 
+var chartDateformat 	= 'M.dd. HH:MM';
 
-			var data = new google.visualization.DataTable();
+//라인차트의 라인 수
 
-			data.addColumn('datetime', 'mdatecreated');
+var chartLineCount    = 10;
 
-			data.addColumn('number', 'Drnpm10Value');
+//컨트롤러 바 차트의 라인 수
 
-			data.addColumn('number', 'Drnpm25Value');
-
-			data.addColumn('number', 'pm10Value');
-
-			data.addColumn('number', 'pm25Value');
+var controlLineCount	= 10;
 
 
 
-			//alert('data생성-------------------' + queryObjectLen);
-
-			for (var i = 0; i < queryObjectLen; i++) {
-
-				var mdatecreated = queryObject.dustlist[i].mdatecreated;
-
-				var Drnpm10Value = queryObject.dustlist[i].Drnpm10Value;
-
-				var Drnpm25Value = queryObject.dustlist[i].Drnpm25Value;
-
-				var pm10Value = queryObject.dustlist[i].pm10Value;
-
-				var pm25Value = queryObject.dustlist[i].pm25Value;
-
-				//alert(mdatecreated + ' ' + Drnpm10Value + ' ' + Drnpm25Value + ' ' + pm10Value + ' ' + pm25Value);
-
-				data.addRows([ [ new Date(mdatecreated), Drnpm10Value, Drnpm25Value, pm10Value, pm25Value ] ]);
-
-			}
+function drawDashboard() {
 
 
-			var chart = new google.visualization.ChartWrapper({
+	var data = new google.visualization.DataTable();
 
-				chartType   : 'LineChart',
+	data.addColumn('datetime', 'mdatecreated');
 
-				containerId : 'lineChartArea', //라인 차트 생성할 영역
+	data.addColumn('number', 'Drnpm10Value');
 
-				options     : {
+	data.addColumn('number', 'Drnpm25Value');
 
-					isStacked   : 'percent',
+	data.addColumn('number', 'pm10Value');
+
+	data.addColumn('number', 'pm25Value');
+
+
+
+	//alert('data생성-------------------' + queryObjectLen);
+
+	for (var i = 0; i < queryObjectLen; i++) {
+
+		var mdatecreated = queryObject.dustlist[i].mdatecreated;
+
+		var Drnpm10Value = queryObject.dustlist[i].Drnpm10Value;
+
+		var Drnpm25Value = queryObject.dustlist[i].Drnpm25Value;
+
+		var pm10Value = queryObject.dustlist[i].pm10Value;
+
+		var pm25Value = queryObject.dustlist[i].pm25Value;
+
+		//alert(mdatecreated + ' ' + Drnpm10Value + ' ' + Drnpm25Value + ' ' + pm10Value + ' ' + pm25Value);
+
+		data.addRows([ [ new Date(mdatecreated), Drnpm10Value, Drnpm25Value, pm10Value, pm25Value ] ]);
+
+	}
+
+
+	var chart = new google.visualization.ChartWrapper({
+
+chartType   : 'LineChart',
+
+containerId : 'lineChartArea', //라인 차트 생성할 영역
+
+options     : {
+
+isStacked   : 'percent',
 
 

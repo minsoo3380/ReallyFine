@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang = "ko">
+<head>
+	<meta charset="utf-8">
+	<script src="../js/d3.js"></script>
+</head>
+
+<body>
+	<h3>Simple transitions</h3>
+	<script>
+		/*
+		d3.select("body").style("background-color", "lightblue")
+		.style("background-color", "gray");
+		*/
+			
+		// delay()는 초 대기 후 duration은 서서히
+		/*
+		d3.selectAll("h3").transition().style("color", "green")
+		.duration(5000);
+		*/
+
+		d3.selectAll("h3").transition().style("color", "rgb(0, 150, 120)").duration(5000);
+	</script>
+</body>
+
+</html>
