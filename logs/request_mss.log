@@ -832,3 +832,7 @@ Traceback (most recent call last):
   File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
     output = open("../html/data/fine_dust_mss.json", "w")
 FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'
+Traceback (most recent call last):
+  File "/var/www/html/ReallyFine/src/request_mssloc.py", line 22, in <module>
+    output = open("../html/data/fine_dust_mss.json", "w")
+FileNotFoundError: [Errno 2] No such file or directory: '../html/data/fine_dust_mss.json'

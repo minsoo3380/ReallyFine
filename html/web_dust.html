@@ -172,7 +172,7 @@
 					radio.style.display = 'inline';
 					excel.style.display = 'inline';
 
-					dt.style.display = 'inline';
+					dt.style.display = 'inline-block';
 					aws.style.display = 'none';
 					radio_value = 0;
 				}else if(value == 1){
@@ -187,7 +187,7 @@
 					radio.style.display = 'inline';
 					excel.style.display = 'inline';
 
-					dt.style.display = 'inline';
+					dt.style.display = 'inline-block';
 					aws.style.display = 'none';
 					radio_value = 1;
 				}else{
@@ -202,7 +202,7 @@
 					excel.style.display = 'none';
 
 					dt.style.display = 'none';
-					aws.style.display = 'inline';
+					aws.style.display = 'block';
 					radio_value = 2;
 				}
 			}
@@ -212,6 +212,7 @@
 				switch(radio_value){
 					case 0:
 						$("#data_table").empty();
+						console.log("r :" , radio_value);
 
 						value_date = document.getElementById("searchDate").value;
 						value_district = document.getElementById("district").value;
@@ -228,6 +229,7 @@
 
 						break;
 					case 1:
+						console.log("r :" , radio_value);
 						$("#data_table").empty();
 						value_year = document.getElementById("avg_year").value;
 						value_mon = document.getElementById("avg_mon").value;
@@ -249,6 +251,7 @@
 
 						break;
 					case 2:
+						console.log("r :" , radio_value);
 						var table_url = "php/getTable.php?section=1200";
 
 						var dt = document.getElementById("aws_table");
@@ -259,7 +262,7 @@
 						var ct_h = addZeros(ct.getHours(), 2);
 						var ct_m = addZeros(ct.getMinutes(), 2);							 var ct_f = value_date.substr(0, 4) + value_date.substr(5, 2) + value_date.substr(8, 2);
 
-						$("#data_table").empty();
+						$("#aws_table").empty();
 						if(value_awsLoc == null || value_awsLoc == '')
 							value_awsLoc = '90';
 
